@@ -1,12 +1,12 @@
-#!/usr/bin/python
+import os, django
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "steam.settings")
+django.setup()
 
-import os
+from steamapp.models import Player
 import sys
 import requests
 import json
-#os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
-#from django.conf import settings
-#from steamapp.models import Player
+import pycountry
 
 """
 Program that loads the data obtained from STEAM-API to the database
@@ -30,17 +30,45 @@ class SteamClient():
         self.friend2 = "&steamid="
         self.friend3 = "&relationship=friend"
 
-    def getPlayer(self):
-        resp_format = "json"
-        url = self.url_steamuser + self.player + self.api_key + self.player2 + \
-              self.steamid
-
+    def getFriends(self):
+        url = self.url_steamuser + self.friend + self.api_key + self.friend2 + \
+              self.steamid + self.friend3
         r = requests.get(url)
         jsondata = json.loads(r.text)
 
-        print jsondata
+        friends = jsondata.get("friendslist").get("friends")
+
+        i = 0
+        for friend in friends:
+            if i == 100:
+                break
+            steamClient.getPlayer(friend.get("steamid"))
+            print "Saved friend num: " + str(i+1) + " out of 100"
+            i += 1
+
+    def getPlayer(self, steamid):
+        url = self.url_steamuser + self.player + self.api_key + self.player2 + steamid
+        r = requests.get(url)
+        jsondata = json.loads(r.text)
+
+        player = jsondata.get("response").get("players")[0]
+
+        privacy = "private"
+        if player.get("communityvisibilitystate") == 3:
+            privacy = "public"
+
+        country_code = player.get("loccountrycode")
+        country_name = ""
+        if country_code != None:
+            country = pycountry.countries.get(alpha2=country_code)
+            country_name = country.name
+
+        p = Player(steamid, player.get("personaname"), player.get("profileurl"), \
+            privacy, country_name, player.get("lastlogoff"))
+        p.save()
 
 
 if __name__ == "__main__":
     steamClient = SteamClient()
-    steamClient.getPlayer()
+    steamClient.getPlayer('76561197982003783')
+    steamClient.getFriends()

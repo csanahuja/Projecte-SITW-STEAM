@@ -1,17 +1,17 @@
 from __future__ import unicode_literals
-
 from django.db import models
-from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from datetime import date
+
+
 
 class Player(models.Model):
     steamid = models.TextField(primary_key=True)
     nickname = models.TextField()
     profileurl = models.TextField()
-    privacity = models.TextField(blank=True, null=True)
-    currentstate = models.TextField(blank=True, null=True)
-    lastlog = models.DateField(null=True)
+    privacy = models.TextField(default="private")
+    country = models.TextField(blank=True, null=True)
+    lastlog = models.IntegerField(default=0)
 
     def __unicode__(self):
         return self.nickname
