@@ -1,8 +1,10 @@
+#!/usr/local/bin/python
+# coding: utf-8
 import os, django
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "steam.settings")
 django.setup()
 
-from steamapp.models import Player, Game
+from steamapp.models import Player, Game, OwnedGame
 import sys
 import requests
 import json
@@ -13,7 +15,7 @@ Program that loads the data obtained from STEAM-API to the database
 API STEAM Key = 070D3A2B5CFB0B9BD4C162C0BC82E25E
 STEAM-ID (64-bit) of Palm Desert (Random Subject) = 76561197982003783
 """
-
+#ARK = 346110
 
 class SteamClient():
 
@@ -31,8 +33,8 @@ class SteamClient():
         self.owngames = "GetOwnedGames/v0001/?key="
         self.owngames2 = "&steamid="
         self.owngames3 = "&include_appinfo=1"
-        self.steamids = []
-        self.games = []
+        self.steamids = {}
+        self.games = {}
 
 
     def getFriends(self):
@@ -50,13 +52,10 @@ class SteamClient():
             if i == 99:
                 break
             steamClient.getAndSavePlayer(friend["steamid"])
-            print "Saved friend num: " + str(i+1) + " out of 99"
             i += 1
 
 
     def getAndSavePlayer(self, steamid):
-        self.steamids.append(steamid)
-
         url = self.url_base + self.service_user + self.player + self.api_key + \
               self.player2 + steamid
         r = requests.get(url)
@@ -64,19 +63,21 @@ class SteamClient():
 
         player = jsondata["response"]["players"][0]
 
+        self.steamids[steamid] = player["personaname"]
+
         privacy = "private"
         if player["communityvisibilitystate"] == 3:
             privacy = "public"
 
-        country_code = player["loccountrycode"]
+        country_code = player.get("loccountrycode")
         country_name = ""
         if country_code != None:
             country = pycountry.countries.get(alpha2=country_code)
             country_name = country.name
 
         p = Player(steamid, player["personaname"], player["profileurl"], \
-            privacy, country_name, player.get["lastlogoff"])
-        p.save()
+            privacy, country_name, player["lastlogoff"])
+        #p.save()
 
 
     def getOwnedGames(self, steamid):
@@ -85,23 +86,36 @@ class SteamClient():
         r = requests.get(url)
         jsondata = json.loads(r.text)
 
-        games = jsondata["response"]["games"]
-        i = 0
-        for game in games:
-            if i == 1000:
-                break
-            self.saveGame(game["appid"],game["name"])
-            print "Saved game num: " + str(i+1) + " out of 1000"
-            i += 1
+        games = jsondata["response"].get("games")
+        if games != None:
+            i = 0
+            for game in games:
+                if i == 50:
+                    break
+                if self.games.has_key(game["appid"]) == False:
+                    self.games[game["appid"]] = game["name"]
+                    self.saveGame(game["appid"],game["name"])
+                self.saveOwnedGame(steamid, game["appid"], game["playtime_forever"])
+                i += 1
 
 
     def saveGame(self, appid, name):
         g = Game(appid, name)
         g.save()
 
+    def saveOwnedGame(self, steamid, appid, playedtime):
+        og = OwnedGame((int(steamid)+appid), steamid, appid, \
+                        self.steamids[steamid], self.games[appid], playedtime)
+        og.save()
+
 
 if __name__ == "__main__":
     steamClient = SteamClient()
+    steamClient.getFriends()
 
-    #steamClient.getFriends()
-    steamClient.getOwnedGames('76561197982003783')
+    i = 0
+    for steamid in steamClient.steamids.keys():
+        print i
+        if i > 81:
+            steamClient.getOwnedGames(steamid)
+        i += 1
