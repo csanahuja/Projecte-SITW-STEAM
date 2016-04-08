@@ -50,7 +50,7 @@ class Achievement(models.Model):
     description = models.TextField(blank=True, null=True)
 
     def __unicode__(self):
-        return "Game: " + self.namegame + " - Achievement: " + self.name
+        return "Game: " + self.namegame + " - Achievement: " + self.displayname
 
 
 class OwnedAchivement(models.Model):

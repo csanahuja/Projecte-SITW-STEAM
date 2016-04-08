@@ -4,7 +4,7 @@ import os, django
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "steam.settings")
 django.setup()
 
-from steamapp.models import Player, Game, OwnedGame
+from steamapp.models import Player, Game, OwnedGame, Achievement
 import sys
 import requests
 import json
@@ -14,6 +14,7 @@ import pycountry
 Program that loads the data obtained from STEAM-API to the database
 API STEAM Key = 070D3A2B5CFB0B9BD4C162C0BC82E25E
 STEAM-ID (64-bit) of Palm Desert (Random Subject) = 76561197982003783
+APPID Garry's Mod (Game with Achievements) = 4000
 """
 #ARK = 346110
 
@@ -22,8 +23,10 @@ class SteamClient():
     def __init__(self):
         self.api_key = "070D3A2B5CFB0B9BD4C162C0BC82E25E"
         self.steamid = "76561197982003783"
+        self.appid = "4000"
         self.url_base = "http://api.steampowered.com/"
         self.service_user = "ISteamUser/"
+        self.service_user_stats = "ISteamUserStats/"
         self.service_player = "IPlayerService/"
         self.player = "GetPlayerSummaries/v0002/?key="
         self.player2 = "&steamids="
@@ -33,6 +36,8 @@ class SteamClient():
         self.owngames = "GetOwnedGames/v0001/?key="
         self.owngames2 = "&steamid="
         self.owngames3 = "&include_appinfo=1"
+        self.achievements = "GetSchemaForGame/v2/?key="
+        self.achievements2 = "&appid="
         self.steamids = {}
         self.games = {}
 
@@ -109,13 +114,30 @@ class SteamClient():
         og.save()
 
 
+    def getAndSaveAchievements(self):
+        url = self.url_base + self.service_user_stats + self.achievements + self.api_key + \
+              self.achievements2 + self.appid
+        r = requests.get(url)
+        jsondata = json.loads(r.text)
+
+        achievements = jsondata["game"]["availableGameStats"]["achievements"]
+
+        for achievement in achievements:
+            a = Achievement(achievement["name"], self.appid, "Garry's Mod", \
+                    achievement["displayName"], achievement["description"])
+            a.save()
+
+
+
 if __name__ == "__main__":
     steamClient = SteamClient()
+    """
+    print "Adding Players - This operation may take some minutes"
     steamClient.getFriends()
 
-    i = 0
+    print "Adding Games, and OwnedGames - This operation may take over 10 minuts"
     for steamid in steamClient.steamids.keys():
-        print i
-        if i > 81:
-            steamClient.getOwnedGames(steamid)
-        i += 1
+        steamClient.getOwnedGames(steamid)
+        """
+    print "Adding Achievements"
+    steamClient.getAndSaveAchievements()
