@@ -1,0 +1,13 @@
+{% extends "steamapp/base.html" %}
+{% block content %}
+<h1>
+    Players
+</h1>
+<ul>
+    {% for player in player_list %}
+        <li><a href="{% url 'steamapp:player_detail' player.steamid 'html' %}">
+            {{ player.nickname }}</a></li>
+    {% empty %}<li>Sorry, no players registered yet.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

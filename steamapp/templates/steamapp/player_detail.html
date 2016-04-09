@@ -1,0 +1,32 @@
+{% extends "steamapp/base.html" %}
+{% block content %}
+<h1>
+    {{ player.nickname }}
+</h1>
+
+<h2>Steam id 64 bits</h2>
+<p>
+    {{ player.steamid }}<br/>
+</p>
+
+<h2>Profile url</h2>
+<p>
+    {{ player.profileurl }}<br/>
+</p>
+
+<h2>Privacy</h2>
+<p>
+    {{ player.privacy }}<br/>
+</p>
+
+<h2>Country</h2>
+<p>
+    {{ player.country }}<br/>
+</p>
+
+<h2>Last log (Unix Time)</h2>
+<p>
+    {{ player.lastlog }} days ago<br/>
+</p>
+
+{% endblock %}

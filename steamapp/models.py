@@ -3,11 +3,6 @@ from django.db import models
 from django.core.urlresolvers import reverse
 from datetime import date
 
-
-
-
-
-
 class Player(models.Model):
     steamid = models.TextField(primary_key=True)
     nickname = models.TextField()
@@ -18,6 +13,9 @@ class Player(models.Model):
 
     def __unicode__(self):
         return self.nickname
+
+    def get_absolute_url(self):
+        return reverse('steamapp:player_detail', kwargs={'pk': self.pk})
 
 
 class Game(models.Model):
