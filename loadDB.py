@@ -4,7 +4,8 @@ import os, django
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "steam.settings")
 django.setup()
 
-from steamapp.models import Player, Game, OwnedGame, Achievement
+from steamapp.models import Player, Game, OwnedGame, Achievement, \
+                            OwnedAchievement, Ban
 import sys
 import requests
 import json
@@ -38,8 +39,12 @@ class SteamClient():
         self.owngames3 = "&include_appinfo=1"
         self.achievements = "GetSchemaForGame/v2/?key="
         self.achievements2 = "&appid="
+        self.ownachievements = "GetPlayerAchievements/v0001/?appid="
+        self.ownachievements2 = "&key="
+        self.ownachievements3 = "&steamid="
         self.steamids = {}
         self.games = {}
+
 
 
     def getFriends(self):
@@ -54,7 +59,7 @@ class SteamClient():
 
         i = 0
         for friend in friends:
-            if i == 99:
+            if i == 100:
                 break
             steamClient.getAndSavePlayer(friend["steamid"])
             i += 1
@@ -106,12 +111,12 @@ class SteamClient():
 
     def saveGame(self, appid, name):
         g = Game(appid, name)
-        g.save()
+        #g.save()
 
     def saveOwnedGame(self, steamid, appid, playedtime):
-        og = OwnedGame((int(steamid)+appid), steamid, appid, \
+        og = OwnedGame((str(steamid)+str(appid)), steamid, appid, \
                         self.steamids[steamid], self.games[appid], playedtime)
-        og.save()
+        #og.save()
 
 
     def getAndSaveAchievements(self):
@@ -125,19 +130,46 @@ class SteamClient():
         for achievement in achievements:
             a = Achievement(achievement["name"], self.appid, "Garry's Mod", \
                     achievement["displayName"], achievement["description"])
-            a.save()
+            #a.save()
+
+
+    def getAndSaveOwnedAchievements(self, steamid):
+        url = self.url_base + self.service_user_stats + self.ownachievements + \
+              self.appid + self.ownachievements2 + self.api_key + \
+              self.ownachievements3 + steamid
+        r = requests.get(url)
+        jsondata = json.loads(r.text)
+
+        own_achs = jsondata["playerstats"].get("achievements")
+        if own_achs !=None:
+            i = 0
+            for own_ach in own_achs:
+                achieved = "Achieved"
+                if own_ach["achieved"] == 0:
+                    achieved = "Not achieved"
+
+                oa = OwnedAchievement((int(steamid)+i),steamid, \
+                        self.appid, own_ach["apiname"], self.steamids[steamid],  \
+                        "Garry's Mod", achieved)
+                oa.save()
+                i += 1
 
 
 
 if __name__ == "__main__":
     steamClient = SteamClient()
-    """
+
     print "Adding Players - This operation may take some minutes"
     steamClient.getFriends()
 
-    print "Adding Games, and OwnedGames - This operation may take over 10 minuts"
+    print "Adding Games, and OwnedGames for each user- This operation may take \
+          over 5 minuts"
     for steamid in steamClient.steamids.keys():
         steamClient.getOwnedGames(steamid)
-        """
+
     print "Adding Achievements"
     steamClient.getAndSaveAchievements()
+
+    print "Adding Owned Achievements for each User - This operation may take some minuts"
+    for steamid in steamClient.steamids.keys():
+        steamClient.getAndSaveOwnedAchievements(steamid)

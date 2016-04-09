@@ -53,13 +53,20 @@ class Achievement(models.Model):
         return "Game: " + self.namegame + " - Achievement: " + self.displayname
 
 
-class OwnedAchivement(models.Model):
+class OwnedAchievement(models.Model):
     steamid = models.ForeignKey(Player, related_name='achievements_owned')
+    appid = models.ForeignKey(Game, related_name='achievements_owned')
     apiname = models.ForeignKey(Achievement, related_name='achievements_owned')
+    nickname = models.TextField(blank=True, null=True)
+    gamename = models.TextField(blank=True, null=True)
     achieved = models.TextField(default='No')
 
+    class Meta:
+        unique_together = (('steamid', 'apiname'),)
+
     def __unicode__(self):
-        return "Player: " + self.steamdid + " Achievement: " + self.apiname
+        return "Player: " + self.nickname + " - " + str(self.apiname) \
+               + " - State: " + self.achieved
 
 
 class Ban(models.Model):
