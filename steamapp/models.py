@@ -71,10 +71,12 @@ class OwnedAchievement(models.Model):
 
 class Ban(models.Model):
     steamid = models.ForeignKey(Player, related_name='bans')
+    nickname = models.TextField(blank=True, null=True)
     communityBanned = models.BooleanField(default=False)
     VACBanned = models.BooleanField(default=False)
     numberOfVACBans = models.IntegerField(default=0)
     daysSinceLastBan = models.IntegerField(default=0)
 
     def __unicode__(self):
-        return "Player: " + self.steamid
+        return "Player: " + self.nickname + " - Number of VAC Bans: " + \
+                str(self.numberOfVACBans)

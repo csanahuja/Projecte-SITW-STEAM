@@ -17,7 +17,7 @@ API STEAM Key = 070D3A2B5CFB0B9BD4C162C0BC82E25E
 STEAM-ID (64-bit) of Palm Desert (Random Subject) = 76561197982003783
 APPID Garry's Mod (Game with Achievements) = 4000
 """
-#ARK = 346110
+
 
 class SteamClient():
 
@@ -42,6 +42,8 @@ class SteamClient():
         self.ownachievements = "GetPlayerAchievements/v0001/?appid="
         self.ownachievements2 = "&key="
         self.ownachievements3 = "&steamid="
+        self.ban = "GetPlayerBans/v1/?key="
+        self.ban2 = "&steamids="
         self.steamids = {}
         self.games = {}
 
@@ -87,7 +89,7 @@ class SteamClient():
 
         p = Player(steamid, player["personaname"], player["profileurl"], \
             privacy, country_name, player["lastlogoff"])
-        #p.save()
+        p.save()
 
 
     def getOwnedGames(self, steamid):
@@ -111,12 +113,12 @@ class SteamClient():
 
     def saveGame(self, appid, name):
         g = Game(appid, name)
-        #g.save()
+        g.save()
 
     def saveOwnedGame(self, steamid, appid, playedtime):
         og = OwnedGame((str(steamid)+str(appid)), steamid, appid, \
                         self.steamids[steamid], self.games[appid], playedtime)
-        #og.save()
+        og.save()
 
 
     def getAndSaveAchievements(self):
@@ -130,7 +132,7 @@ class SteamClient():
         for achievement in achievements:
             a = Achievement(achievement["name"], self.appid, "Garry's Mod", \
                     achievement["displayName"], achievement["description"])
-            #a.save()
+            a.save()
 
 
     def getAndSaveOwnedAchievements(self, steamid):
@@ -155,6 +157,20 @@ class SteamClient():
                 i += 1
 
 
+    def getAndSaveBans(self, steamid):
+        url = self.url_base + self.service_user + self.ban + self.api_key + \
+              self.ban2 + steamid
+        r = requests.get(url)
+        jsondata = json.loads(r.text)
+
+        ban = jsondata["players"][0]
+
+        b = Ban(steamid, steamid, self.steamids[steamid], ban["CommunityBanned"], \
+                ban["VACBanned"],ban["NumberOfVACBans"], ban["DaysSinceLastBan"])
+        b.save()
+
+
+
 
 if __name__ == "__main__":
     steamClient = SteamClient()
@@ -162,14 +178,19 @@ if __name__ == "__main__":
     print "Adding Players - This operation may take some minutes"
     steamClient.getFriends()
 
-    print "Adding Games, and OwnedGames for each user- This operation may take \
-          over 5 minuts"
+    print "Adding Games, and OwnedGames for each Player - This operation may take \
+           over 5 minutes"
     for steamid in steamClient.steamids.keys():
         steamClient.getOwnedGames(steamid)
 
     print "Adding Achievements"
     steamClient.getAndSaveAchievements()
 
-    print "Adding Owned Achievements for each User - This operation may take some minuts"
+    print "Adding Owned Achievements for each Player - This operation may take \
+           some minutes"
     for steamid in steamClient.steamids.keys():
         steamClient.getAndSaveOwnedAchievements(steamid)
+
+    print "Adding Ban-State for each User - This operation may take some minutes"
+    for steamid in steamClient.steamids.keys():
+        steamClient.getAndSaveBans(steamid)
