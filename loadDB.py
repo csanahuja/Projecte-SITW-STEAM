@@ -46,6 +46,8 @@ class SteamClient():
         self.ban2 = "&steamids="
         self.steamids = {}
         self.games = {}
+        self.id_ownedgames = 0
+        self.id_ownedachievements = 0
 
 
 
@@ -116,8 +118,9 @@ class SteamClient():
         g.save()
 
     def saveOwnedGame(self, steamid, appid, playedtime):
-        og = OwnedGame((str(steamid)+str(appid)), steamid, appid, \
+        og = OwnedGame(self.id_ownedgames, steamid, appid, \
                         self.steamids[steamid], self.games[appid], playedtime)
+        self.id_ownedgames += 1
         og.save()
 
 
@@ -144,17 +147,16 @@ class SteamClient():
 
         own_achs = jsondata["playerstats"].get("achievements")
         if own_achs !=None:
-            i = 0
             for own_ach in own_achs:
                 achieved = "Achieved"
                 if own_ach["achieved"] == 0:
                     achieved = "Not achieved"
 
-                oa = OwnedAchievement((int(steamid)+i),steamid, \
+                oa = OwnedAchievement(self.id_ownedachievements,steamid, \
                         self.appid, own_ach["apiname"], self.steamids[steamid],  \
                         "Garry's Mod", achieved)
+                self.id_ownedachievements += 1
                 oa.save()
-                i += 1
 
 
     def getAndSaveBans(self, steamid):
@@ -170,16 +172,15 @@ class SteamClient():
         b.save()
 
 
-
-
 if __name__ == "__main__":
     steamClient = SteamClient()
 
+    print "Adding DATA to DATABASE - Whole process make take over 30 minutes"
     print "Adding Players - This operation may take some minutes"
     steamClient.getFriends()
 
     print "Adding Games, and OwnedGames for each Player - This operation may take \
-           over 5 minutes"
+           over 20 minutes"
     for steamid in steamClient.steamids.keys():
         steamClient.getOwnedGames(steamid)
 
@@ -187,7 +188,7 @@ if __name__ == "__main__":
     steamClient.getAndSaveAchievements()
 
     print "Adding Owned Achievements for each Player - This operation may take \
-           some minutes"
+           over 5 minutes"
     for steamid in steamClient.steamids.keys():
         steamClient.getAndSaveOwnedAchievements(steamid)
 
