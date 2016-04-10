@@ -7,8 +7,7 @@ from django.views.generic import DetailView, ListView
 from django.views.generic.base import TemplateResponseMixin
 from django.views.generic.edit import CreateView
 
-from models import Player
-#from forms import RestaurantForm, DishForm
+from models import Player, Game
 
 class ConnegResponseMixin(TemplateResponseMixin):
 
@@ -43,3 +42,15 @@ class PlayerList(ListView, ConnegResponseMixin):
 class PlayerDetail(DetailView, ConnegResponseMixin):
     model = Player
     template_name = 'steamapp/player_detail.html'
+
+
+class GameList(ListView, ConnegResponseMixin):
+    model = Game
+    queryset = Game.objects.filter()
+    context_object_name = 'game_list'
+    template_name = 'steamapp/game_list.html'
+
+
+class GameDetail(DetailView, ConnegResponseMixin):
+    model = Game
+    template_name = 'steamapp/game_detail.html'
