@@ -3,8 +3,8 @@ from django.core.urlresolvers import reverse_lazy
 from django.views.generic import UpdateView
 from django.views.generic.base import RedirectView
 
-from models import Player, Game
-from views import PlayerList, PlayerDetail, GameList, GameDetail
+from models import Player, Game, OwnedGame
+from views import PlayerList, PlayerDetail, GameList, GameDetail, OwnedGameDetail
 
 urlpatterns = patterns('',
     # Home page
@@ -31,5 +31,10 @@ urlpatterns = patterns('',
     url(r'^games/(?P<pk>\d+)\.(?P<extension>(json|xml|html))$',
         GameDetail.as_view(),
         name='game_detail'),
+
+    # Owned games details, ex.:  /steamapps/players/<steamid>/ownedgames/<appid>.json
+    url(r'^steamapp/(?P<pkr>\d+)/ownedgames/(?P<pk>\d+)\.(?P<extension>(json|xml|html))$',
+        OwnedGameDetail.as_view(),
+        name='ownedgame_detail'),
 
 )

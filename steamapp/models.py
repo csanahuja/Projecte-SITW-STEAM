@@ -28,7 +28,7 @@ class Game(models.Model):
 
 class OwnedGame(models.Model):
     steamid = models.ForeignKey(Player, null = True, related_name='ownedgames')
-    appid = models.ForeignKey(Game, null = True, related_name='ownedgames')
+    appid = models.ForeignKey(Game, null = True, related_name='gamesownedby')
     nickname = models.TextField(blank=True, null=True)
     gamename = models.TextField(blank=True, null=True)
     timeplayed_forever = models.IntegerField(default=0)
@@ -38,6 +38,10 @@ class OwnedGame(models.Model):
 
     def __unicode__(self):
         return "Player: "+ self.nickname + " Game: " + self.gamename
+
+    def get_absolute_url(self):
+        return reverse('steamapp:owned_detail', kwargs={'pkp': self.steamid.pk, \
+                        'pkg': self.appid, 'pk': self.pk})
 
 
 class Achievement(models.Model):

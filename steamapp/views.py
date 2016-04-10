@@ -7,7 +7,7 @@ from django.views.generic import DetailView, ListView
 from django.views.generic.base import TemplateResponseMixin
 from django.views.generic.edit import CreateView
 
-from models import Player, Game
+from models import Player, Game, OwnedGame
 
 class ConnegResponseMixin(TemplateResponseMixin):
 
@@ -54,3 +54,15 @@ class GameList(ListView, ConnegResponseMixin):
 class GameDetail(DetailView, ConnegResponseMixin):
     model = Game
     template_name = 'steamapp/game_detail.html'
+
+
+class OwnedGameList(ListView, ConnegResponseMixin):
+    model = OwnedGame
+
+    def get_queryset(self):
+        return Dish.objects.filter(steamid=self.kwargs['pk'])
+
+
+class OwnedGameDetail(DetailView, ConnegResponseMixin):
+    model = OwnedGame
+    template_name = 'steamapp/ownedgame_detail.html'
