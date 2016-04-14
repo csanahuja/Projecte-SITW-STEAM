@@ -8,7 +8,7 @@ from django.views.generic import DetailView, ListView
 from django.views.generic.base import TemplateResponseMixin
 from django.views.generic.edit import CreateView
 
-from models import Player, Game, OwnedGame
+from models import Player, Game, OwnedGame, Ban
 
 class ConnegResponseMixin(TemplateResponseMixin):
 
@@ -64,3 +64,8 @@ class GameDetail(DetailView, ConnegResponseMixin):
 class OwnedGameDetail(DetailView, ConnegResponseMixin):
     model = OwnedGame
     template_name = 'steamapp/ownedgame_detail.html'
+    
+
+class BanDetail(DetailView, ConnegResponseMixin):
+    model = Ban
+    template_name = 'steamapp/ban_detail.html'

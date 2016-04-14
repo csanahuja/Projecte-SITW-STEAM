@@ -3,11 +3,11 @@
 <h1>
     Games
 </h1>
-<ul>
+
     {% for game in game_list %}
-        <li><a href="{% url 'steamapp:game_detail' game.appid 'html' %}">
-            {{ game.name }}</a></li>
-    {% empty %}<li>Sorry, no games registered yet.</li>
+        <a href="{% url 'steamapp:game_detail' game.appid 'html' %}">
+            {{ game.name }}</a><br/>
+    {% empty %}<p>Sorry, no games registered yet.</p>
     {% endfor %}
-</ul>
+
 {% endblock %}

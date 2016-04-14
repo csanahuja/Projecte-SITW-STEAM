@@ -1,0 +1,33 @@
+{% extends "steamapp/base.html" %}
+{% block content %}
+<h1>
+    Ban Status of Player : {{ ban.nickname }}
+</h1>
+
+<h2>Steam id 64 bits</h2>
+<p>
+    {{ ban.steamid }}<br/>
+</p>
+
+<h2>Community Banned</h2>
+<p>
+    {{ ban.communityBanned }}<br/>
+</p>
+
+<h2>VAC Banned</h2>
+<p>
+    {{ ban.VACBanned }}<br/>
+</p>
+
+<h2>Number of VAC bans</h2>
+<p>
+    {{ ban.numberOfVACBans }}<br/>
+</p>
+
+<h2>Days since last bany</h2>
+<p>
+    {{ ban.daysSinceLastBan }}<br/>
+</p>
+
+
+{% endblock %}

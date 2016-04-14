@@ -4,12 +4,13 @@ from django.views.generic import UpdateView
 from django.views.generic.base import RedirectView
 
 from models import Player, Game, OwnedGame
-from views import PlayerList, PlayerDetail, GameList, GameDetail, OwnedGameDetail
+from views import PlayerList, PlayerDetail, GameList, GameDetail, \
+                  OwnedGameDetail, BanDetail
 
 urlpatterns = patterns('',
     # Home page
     url(r'^$',
-        'steamapp.views.home'), 
+        'steamapp.views.home'),
 
     # List Players: /steamapp/player.json
     url(r'^players\.(?P<extension>(json|xml|html))$',
@@ -31,9 +32,14 @@ urlpatterns = patterns('',
         GameDetail.as_view(),
         name='game_detail'),
 
-    # Owned games details, ex.:  /steamapps/players/<steamid>/ownedgames/<appid>.json
-    url(r'^steamapp/(?P<pkr>\d+)/ownedgames/(?P<pk>\d+)\.(?P<extension>(json|xml|html))$',
+    # Owned games details, ex.:  /steamapps/ownedgames/<id>.json
+    url(r'^ownedgames/(?P<pk>\d+)\.(?P<extension>(json|xml|html))$',
         OwnedGameDetail.as_view(),
         name='ownedgame_detail'),
+
+    # Ban details, ex.:  /steamapps/players/<steamid>/baninfo.json
+    url(r'^players/(?P<pk>\d+)/baninfo\.(?P<extension>(json|xml|html))$',
+        BanDetail.as_view(),
+        name='ban_detail'),
 
 )

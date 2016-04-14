@@ -43,8 +43,7 @@ class OwnedGame(models.Model):
         return "Player: "+ self.nickname + " Game: " + self.gamename
 
     def get_absolute_url(self):
-        return reverse('steamapp:owned_detail', kwargs={'pkp': self.steamid.pk, \
-                        'pkg': self.appid, 'pk': self.pk})
+        return reverse('steamapp:owned_detail', kwargs={'pk': self.pk})
 
 
 class Achievement(models.Model):
@@ -85,3 +84,7 @@ class Ban(models.Model):
     def __unicode__(self):
         return "Player: " + self.nickname + " - Number of VAC Bans: " + \
                 str(self.numberOfVACBans)
+
+    def get_absolute_url(self):
+        return reverse('steamapp:ban_detail', kwargs={'pkp': self.steamid.pk, \
+                        'pk': self.pk})

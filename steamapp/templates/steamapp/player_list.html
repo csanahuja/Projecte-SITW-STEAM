@@ -3,11 +3,11 @@
 <h1>
     Players
 </h1>
-<ul>
+
     {% for player in player_list %}
-        <li><a href="{% url 'steamapp:player_detail' player.steamid 'html' %}">
-            {{ player.nickname }}</a></li>
-    {% empty %}<li>Sorry, no players registered yet.</li>
+        <p><a href="{% url 'steamapp:player_detail' player.steamid 'html' %}">
+            {{ player.nickname }}</a></p>
+    {% empty %}<li>No players registered on database</li>
     {% endfor %}
-</ul>
+
 {% endblock %}
