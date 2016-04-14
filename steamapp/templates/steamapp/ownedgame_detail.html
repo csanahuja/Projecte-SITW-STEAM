@@ -1,7 +1,10 @@
 {% extends "steamapp/base.html" %}
 {% block content %}
 <h1>
-    <p>  {{ownedgame.gamename}} owned by <a href="{% url 'steamapp:player_detail' ownedgame.steamid.steamid 'html' %}">{{ ownedgame.steamid.nickname }}</a></p>
+<p>
+<a href="{% url 'steamapp:game_detail' ownedgame.appid.appid 'html' %}">{{ ownedgame.appid.name}}</a>
+Owned by
+<a href="{% url 'steamapp:player_detail' ownedgame.steamid.steamid 'html' %}">{{ ownedgame.steamid.nickname }}</a></p>
 </h1>
 
 <h2>Steam id 64 bits</h2>

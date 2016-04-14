@@ -25,6 +25,9 @@ class Game(models.Model):
     def __unicode__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('steamapp:game_detail', kwargs={'pk': self.pk})
+
 
 class OwnedGame(models.Model):
     steamid = models.ForeignKey(Player, null = True, related_name='ownedgames')

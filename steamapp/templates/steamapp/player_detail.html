@@ -32,11 +32,11 @@
 <h2> Games <h2>
 <ul>
 
-    {% for ownedgame in player.ownedgames.all %}
-        <li><a href="{% url 'steamapp:ownedgame_detail' player.steamid ownedgame.id 'html' %}">
-            {{ ownedgame.gamename }}</a></li>
-    {% empty %}<li>Sorry, no games registered yet.</li>
-    {% endfor %}
+  {% for ownedgame in player.ownedgames.all %}
+      <li><a href="{% url 'steamapp:ownedgame_detail' player.steamid ownedgame.id 'html' %}">
+          {{ ownedgame.gamename }}</a></li>
+  {% empty %}<li>Either no games owned or private profile.</li>
+  {% endfor %}
 
 
 </ul>
