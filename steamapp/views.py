@@ -3,6 +3,7 @@ from django.core import serializers
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import get_object_or_404
+from django.shortcuts import render_to_response
 from django.views.generic import DetailView, ListView
 from django.views.generic.base import TemplateResponseMixin
 from django.views.generic.edit import CreateView
@@ -32,6 +33,10 @@ class ConnegResponseMixin(TemplateResponseMixin):
         return super(ConnegResponseMixin, self).render_to_response(context)
 
 
+def home(request):
+    return render_to_response('steamapp/home.html')
+
+
 class PlayerList(ListView, ConnegResponseMixin):
     model = Player
     queryset = Player.objects.filter()
@@ -54,13 +59,6 @@ class GameList(ListView, ConnegResponseMixin):
 class GameDetail(DetailView, ConnegResponseMixin):
     model = Game
     template_name = 'steamapp/game_detail.html'
-
-
-class OwnedGameList(ListView, ConnegResponseMixin):
-    model = OwnedGame
-
-    def get_queryset(self):
-        return Dish.objects.filter(steamid=self.kwargs['pk'])
 
 
 class OwnedGameDetail(DetailView, ConnegResponseMixin):

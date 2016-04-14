@@ -9,8 +9,7 @@ from views import PlayerList, PlayerDetail, GameList, GameDetail, OwnedGameDetai
 urlpatterns = patterns('',
     # Home page
     url(r'^$',
-        RedirectView.as_view(url=reverse_lazy('steamapp:player_list', kwargs={'extension': 'html'})),
-        name='home_page'),
+        'steamapp.views.home'), 
 
     # List Players: /steamapp/player.json
     url(r'^players\.(?P<extension>(json|xml|html))$',

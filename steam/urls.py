@@ -20,4 +20,5 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^steamapp/', include('steamapp.urls', namespace='steamapp')),
+    url(r'', include('steamapp.urls', namespace='steamapp')),
 ]

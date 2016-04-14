@@ -1,0 +1,19 @@
+{% extends "steamapp/base.html" %}
+{% block content %}
+
+<h1 align="center">
+Welcome to STEAMAPP made by Cristian Sanahuja & Adrià Céspedes
+</h1>
+
+<h1 align="center">Entities</h1>
+
+<h2 align="center">
+<a href="{% url 'steamapp:player_list' 'html' %}">Players</a></p>
+</h2>
+
+<h2 align="center">
+<a href="{% url 'steamapp:game_list' 'html' %}">Games</a></p>
+</h2>
+
+
+{% endblock %}
