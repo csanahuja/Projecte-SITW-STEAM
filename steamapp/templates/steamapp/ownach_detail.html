@@ -1,0 +1,29 @@
+{% extends "steamapp/base.html" %}
+{% block content %}
+<h1>
+Achievement:
+<a href="{% url 'steamapp:achievement_detail' ownedachievement.achid.id 'html' %}">{{ ownedachievement.achid.displayname }}</a>
+</h1>
+
+<h2>Apiname</h2>
+<p>
+    {{ ownedachievement.achid.apiname }}<br/>
+</p>
+
+<h2>Player</h2>
+<p>
+Steam id: {{ownedachievement.steamid.steamid}}
+</p>
+<p>
+Name:
+<a href="{% url 'steamapp:player_detail' ownedachievement.steamid.steamid 'html' %}">{{ ownedachievement.steamid.nickname}}</a>
+</p>
+
+
+<h2>Achieved</h2>
+<p>
+    {{ ownedachievement.achieved }}<br/>
+</p>
+
+
+{% endblock %}

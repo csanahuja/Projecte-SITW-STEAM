@@ -26,18 +26,28 @@
 
 <h2>Last log (Unix Time)</h2>
 <p>
-    {{ player.lastlog }} days ago<br/>
+    {{ player.lastlog }}<br/>
 </p>
 
 <h2><a href="{% url 'steamapp:ban_detail' player.steamid 'html' %}">
     Ban Status</a></h2>
 
-<h2> Games </h2>
+<h2> Player Games </h2>
 
   {% for ownedgame in player.ownedgames.all %}
       <a href="{% url 'steamapp:ownedgame_detail' ownedgame.id 'html' %}">
-        {{ ownedgame.gamename }}<br/>
+        {{ ownedgame.gamename }}</a><br/>
   {% empty %}<p>Either no games owned or private profile.</p>
   {% endfor %}
+
+
+<h2> Player Achievements </h2>
+
+  {% for ownach in player.ownedachievements.all %}
+      <a href="{% url 'steamapp:ownach_detail' ownach.id 'html' %}">
+          {{ ownach.achid.displayname }}</a><br/>
+  {% empty %}<p>This player has not achievement registered</p>
+  {% endfor %}
+
 
 {% endblock %}

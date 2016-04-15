@@ -18,11 +18,18 @@ Name:
 <a href="{% url 'steamapp:game_detail' achievement.appid.appid 'html' %}">{{ achievement.appid.name}}</a>
 </p>
 
-
 <h2>Description</h2>
 <p>
     {{ achievement.description }}<br/>
 </p>
+
+<h2> Achievement registered for </h2>
+
+{% for ownach in achievement.achievementsownedby.all %}
+    <a href="{% url 'steamapp:ownach_detail' ownach.id 'html' %}">
+        {{ ownach.steamid.nickname }}</a><br/>
+{% empty %}<p>This achievement is not registered in any player</p>
+{% endfor %}
 
 
 {% endblock %}

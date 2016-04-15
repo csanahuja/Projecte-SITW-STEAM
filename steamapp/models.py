@@ -61,17 +61,20 @@ class Achievement(models.Model):
 
 
 class OwnedAchievement(models.Model):
-    steamid = models.ForeignKey(Player, related_name='achievements_owned')
-    apiname = models.ForeignKey(Achievement, related_name='achievements_owned')
+    steamid = models.ForeignKey(Player, related_name='ownedachievements')
+    achid = models.ForeignKey(Achievement, related_name='achievementsownedby')
     nickname = models.TextField(blank=True, null=True)
     achieved = models.TextField(default='No')
 
     class Meta:
-        unique_together = (('steamid', 'apiname'),)
+        unique_together = (('steamid', 'achid'),)
 
     def __unicode__(self):
-        return "Player: " + self.nickname + " - " + str(self.apiname) \
+        return "Player: " + self.nickname + " - " + str(self.achid.displayname) \
                + " - State: " + self.achieved
+
+    def get_absolute_url(self):
+        return reverse('steamapp:ownach_detail', kwargs={'pk': self.pk})
 
 
 class Ban(models.Model):
