@@ -9,6 +9,15 @@
     {{ game.appid }}<br/>
 </p>
 
+<h2> Game Achievements </h2>
+
+{% for achievement in game.achievements.all %}
+    <a href="{% url 'steamapp:achievement_detail' achievement.id 'html' %}">
+        {{ achievement.displayname }}</a><br/>
+{% empty %}<p>This game either does not have achievements or have but not registered</p>
+{% endfor %}
+
+
 <h2> Game Owned by </h2>
 
 {% for ownedgame in game.gamesownedby.all %}

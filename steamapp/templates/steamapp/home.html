@@ -1,18 +1,22 @@
 {% extends "steamapp/base.html" %}
 {% block content %}
 
-<h1 align="center">
+<h1>
 Welcome to STEAMAPP made by Cristian Sanahuja & Adrià Céspedes
 </h1>
 
-<h1 align="center">Entities</h1>
+<h1>Entities</h1>
 
-<h2 align="center">
+<h2>
 <a href="{% url 'steamapp:player_list' 'html' %}">Players</a></p>
 </h2>
 
-<h2 align="center">
+<h2>
 <a href="{% url 'steamapp:game_list' 'html' %}">Games</a></p>
+</h2>
+
+<h2>
+<a href="{% url 'steamapp:achievement_list' 'html' %}">Achievement</a></p>
 </h2>
 
 

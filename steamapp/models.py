@@ -47,7 +47,7 @@ class OwnedGame(models.Model):
 
 
 class Achievement(models.Model):
-    apiname = models.TextField(primary_key=True)
+    apiname = models.TextField(blank=True, null=True)
     appid = models.ForeignKey(Game, related_name='achievements')
     namegame = models.TextField(blank=True, null=True)
     displayname = models.TextField(blank=True, null=True)
@@ -56,13 +56,14 @@ class Achievement(models.Model):
     def __unicode__(self):
         return "Game: " + self.namegame + " - Achievement: " + self.displayname
 
+    def get_absolute_url(self):
+        return reverse('steamapp:achievement_detail', kwargs={'pk': self.pk})
+
 
 class OwnedAchievement(models.Model):
     steamid = models.ForeignKey(Player, related_name='achievements_owned')
-    appid = models.ForeignKey(Game, related_name='achievements_owned')
     apiname = models.ForeignKey(Achievement, related_name='achievements_owned')
     nickname = models.TextField(blank=True, null=True)
-    gamename = models.TextField(blank=True, null=True)
     achieved = models.TextField(default='No')
 
     class Meta:

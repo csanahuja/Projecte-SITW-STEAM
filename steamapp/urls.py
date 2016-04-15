@@ -5,7 +5,7 @@ from django.views.generic.base import RedirectView
 
 from models import Player, Game, OwnedGame
 from views import PlayerList, PlayerDetail, GameList, GameDetail, \
-                  OwnedGameDetail, BanDetail
+                  OwnedGameDetail, BanDetail, AchievementList, AchievementDetail
 
 urlpatterns = patterns('',
     # Home page
@@ -41,5 +41,16 @@ urlpatterns = patterns('',
     url(r'^players/(?P<pk>\d+)/baninfo\.(?P<extension>(json|xml|html))$',
         BanDetail.as_view(),
         name='ban_detail'),
+
+
+    # List Achievements: /steamapp/games.json
+    url(r'^achievements\.(?P<extension>(json|xml|html))$',
+        AchievementList.as_view(),
+        name='achievement_list'),
+
+    # Achievements details, ex.: /steamapps/players/<appid>.json
+    url(r'^achievements/(?P<pk>\d+)\.(?P<extension>(json|xml|html))$',
+        AchievementDetail.as_view(),
+        name='achievement_detail'),
 
 )

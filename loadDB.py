@@ -46,8 +46,11 @@ class SteamClient():
         self.ban2 = "&steamids="
         self.steamids = {}
         self.games = {}
+        self.achievement_ids = {}
         self.id_ownedgames = 0
         self.id_ownedachievements = 0
+        self.id_achievements = 0
+
 
 
 
@@ -133,8 +136,11 @@ class SteamClient():
         achievements = jsondata["game"]["availableGameStats"]["achievements"]
 
         for achievement in achievements:
-            a = Achievement(achievement["name"], self.appid, "Garry's Mod", \
-                    achievement["displayName"], achievement["description"])
+            a = Achievement(self.id_achievements, achievement["name"], \
+                    self.appid, "Garry's Mod", achievement["displayName"], \
+                    achievement["description"])
+            self.achievement_ids[achievement["name"]] = self.id_achievements
+            self.id_achievements += 1
             a.save()
 
 
@@ -153,8 +159,7 @@ class SteamClient():
                     achieved = "Not achieved"
 
                 oa = OwnedAchievement(self.id_ownedachievements,steamid, \
-                        self.appid, own_ach["apiname"], self.steamids[steamid],  \
-                        "Garry's Mod", achieved)
+                        self.achievement_ids[own_ach["apiname"]], self.steamids[steamid], achieved)
                 self.id_ownedachievements += 1
                 oa.save()
 
@@ -178,12 +183,12 @@ if __name__ == "__main__":
     print "Adding DATA to DATABASE - Whole process make take over 30 minutes"
     print "Adding Players - This operation may take some minutes"
     steamClient.getFriends()
-
+    """
     print "Adding Games, and OwnedGames for each Player - This operation may take \
            over 20 minutes"
     for steamid in steamClient.steamids.keys():
         steamClient.getOwnedGames(steamid)
-
+    """
     print "Adding Achievements"
     steamClient.getAndSaveAchievements()
 

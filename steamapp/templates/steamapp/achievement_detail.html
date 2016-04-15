@@ -1,0 +1,28 @@
+{% extends "steamapp/base.html" %}
+{% block content %}
+<h1>
+    {{ achievement.displayname }}
+</h1>
+
+<h2>Apiname</h2>
+<p>
+    {{ achievement.apiname }}<br/>
+</p>
+
+<h2>Game</h2>
+<p>
+Appid: {{achievement.appid.appid}}
+</p>
+<p>
+Name:
+<a href="{% url 'steamapp:game_detail' achievement.appid.appid 'html' %}">{{ achievement.appid.name}}</a>
+</p>
+
+
+<h2>Description</h2>
+<p>
+    {{ achievement.description }}<br/>
+</p>
+
+
+{% endblock %}

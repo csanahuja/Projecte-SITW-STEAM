@@ -1,0 +1,13 @@
+{% extends "steamapp/base.html" %}
+{% block content %}
+<h1>
+  Achievements
+</h1>
+
+    {% for achievement in achievement_list %}
+        <a href="{% url 'steamapp:achievement_detail' achievement.id 'html' %}">
+            {{ achievement.displayname }}</a><br/>
+    {% empty %}<p>No achievements registered yet.</p>
+    {% endfor %}
+
+{% endblock %}

@@ -8,7 +8,7 @@ from django.views.generic import DetailView, ListView
 from django.views.generic.base import TemplateResponseMixin
 from django.views.generic.edit import CreateView
 
-from models import Player, Game, OwnedGame, Ban
+from models import Player, Game, OwnedGame, Ban, Achievement
 
 class ConnegResponseMixin(TemplateResponseMixin):
 
@@ -64,8 +64,19 @@ class GameDetail(DetailView, ConnegResponseMixin):
 class OwnedGameDetail(DetailView, ConnegResponseMixin):
     model = OwnedGame
     template_name = 'steamapp/ownedgame_detail.html'
-    
+
 
 class BanDetail(DetailView, ConnegResponseMixin):
     model = Ban
     template_name = 'steamapp/ban_detail.html'
+
+
+class AchievementList(ListView, ConnegResponseMixin):
+    model = Achievement
+    queryset = Achievement.objects.filter()
+    context_object_name = 'achievement_list'
+    template_name = 'steamapp/achievement_list.html'
+
+class AchievementDetail(DetailView, ConnegResponseMixin):
+    model = Achievement
+    template_name = 'steamapp/achievement_detail.html'
