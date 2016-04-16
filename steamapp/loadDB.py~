@@ -1,4 +1,0 @@
-from steamapp.models import Player
-
-p1 = Player("3342234","User1","nothere","private","offline")
-p1.save()
