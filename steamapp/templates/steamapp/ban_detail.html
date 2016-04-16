@@ -1,7 +1,9 @@
 {% extends "steamapp/base.html" %}
 {% block content %}
 <h1>
-    Ban Status of Player : {{ ban.nickname }}
+  <p>
+    Ban Status of Player : <a href="{% url 'steamapp:player_detail' ban.steamid.steamid 'html' %}">{{ ban.nickname}}</a>
+  </p>
 </h1>
 
 <h2>Steam id 64 bits</h2>

@@ -1,16 +1,8 @@
-from django.utils import timezone
-from django.core import serializers
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import get_object_or_404
+from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.views.generic import DetailView, ListView
 from django.views.generic.base import TemplateResponseMixin
-from django.views.generic.edit import CreateView
-from django.contrib.auth import authenticate, login
-from django.template import RequestContext
-from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required
 from models import Player, Game, OwnedGame, Ban, Achievement, OwnedAchievement
 
 
@@ -39,7 +31,6 @@ class ConnegResponseMixin(TemplateResponseMixin):
 
 def home(request):
     return render_to_response('steamapp/home.html')
-
 
 class PlayerList(ListView, ConnegResponseMixin):
     model = Player

@@ -1,9 +1,4 @@
 from django.conf.urls import patterns, url
-from django.core.urlresolvers import reverse_lazy
-from django.views.generic import UpdateView
-from django.views.generic.base import RedirectView
-
-
 from models import Player, Game, OwnedGame
 from views import PlayerList, PlayerDetail, GameList, GameDetail, \
                   OwnedGameDetail, BanDetail, AchievementList, \
@@ -14,19 +9,16 @@ urlpatterns = patterns('',
     url(r'^$',
         'steamapp.views.home'),
 
+    #Login
      url(r'^login/$',
         'django.contrib.auth.views.login',
         name='login',),
 
+    #Logout
     url(r'^logout/$',
         'django.contrib.auth.views.logout',
         name='logout',
         kwargs={'next_page': '/'}),
-
-    # Login
-    url(r'^login',
-        'django.contrib.auth.views.login',
-        name='login'),
 
     # List Players: /steamapp/player.json
     url(r'^players\.(?P<extension>(json|xml|html))$',

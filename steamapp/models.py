@@ -1,7 +1,6 @@
 from __future__ import unicode_literals
 from django.db import models
 from django.core.urlresolvers import reverse
-from datetime import date
 
 class Player(models.Model):
     steamid = models.TextField(primary_key=True)
