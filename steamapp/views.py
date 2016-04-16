@@ -7,8 +7,12 @@ from django.shortcuts import render_to_response
 from django.views.generic import DetailView, ListView
 from django.views.generic.base import TemplateResponseMixin
 from django.views.generic.edit import CreateView
-
+from django.contrib.auth import authenticate, login
+from django.template import RequestContext
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from models import Player, Game, OwnedGame, Ban, Achievement, OwnedAchievement
+
 
 class ConnegResponseMixin(TemplateResponseMixin):
 

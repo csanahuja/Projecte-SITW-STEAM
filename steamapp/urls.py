@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse_lazy
 from django.views.generic import UpdateView
 from django.views.generic.base import RedirectView
 
+
 from models import Player, Game, OwnedGame
 from views import PlayerList, PlayerDetail, GameList, GameDetail, \
                   OwnedGameDetail, BanDetail, AchievementList, \
@@ -12,6 +13,20 @@ urlpatterns = patterns('',
     # Home page
     url(r'^$',
         'steamapp.views.home'),
+
+     url(r'^login/$',
+        'django.contrib.auth.views.login',
+        name='login',),
+
+    url(r'^logout/$',
+        'django.contrib.auth.views.logout',
+        name='logout',
+        kwargs={'next_page': '/'}),
+
+    # Login
+    url(r'^login',
+        'django.contrib.auth.views.login',
+        name='login'),
 
     # List Players: /steamapp/player.json
     url(r'^players\.(?P<extension>(json|xml|html))$',
@@ -39,7 +54,7 @@ urlpatterns = patterns('',
         name='ownedgame_detail'),
 
     # Ban details, ex.:  /steamapps/players/<steamid>/baninfo.json
-    url(r'^players/(?P<pk>\d+)/baninfo\.(?P<extension>(json|xml|html))$',
+    url(r'^banstatus/(?P<pk>\d+)\.(?P<extension>(json|xml|html))$',
         BanDetail.as_view(),
         name='ban_detail'),
 

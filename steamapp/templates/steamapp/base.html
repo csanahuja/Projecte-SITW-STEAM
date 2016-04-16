@@ -11,8 +11,11 @@
 <div id="header">
   <h2 align="right">
     {% block header %}
-        {% if user.username %}<p>User {{ user.username }}</p>
-        {% else %}<p><a href="/login/">Sign in</a></p>{% endif %}
+        {% if user.is_authenticated %}
+            <p>Welcome, {{ user.username }}  <a href="{% url 'steamapp:logout' %}"> [Log out]</a></p>
+        {% else %}
+            <p>Welcome, Guest <a href="{% url 'steamapp:login' %}"> [Log in]</a></p>
+        {% endif %}
     {% endblock %}
   </h2>
 </div>
