@@ -1,22 +1,25 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
+from django.conf import settings
+from django.contrib.auth.views import login, logout
 from models import Player, Game, OwnedGame
 from views import PlayerList, PlayerDetail, GameList, GameDetail, \
                   OwnedGameDetail, BanDetail, AchievementList, \
-                  AchievementDetail, OwnedAchievementDetail
+                  AchievementDetail, OwnedAchievementDetail, HomeView
 
-urlpatterns = patterns('',
+urlpatterns = [
     # Home page
     url(r'^$',
-        'steamapp.views.home'),
+        HomeView.as_view(template_name='steamapp/home.html'),
+        name = 'home'),
 
     #Login
      url(r'^login/$',
-        'django.contrib.auth.views.login',
-        name='login',),
+        login,
+        name='login'),
 
     #Logout
     url(r'^logout/$',
-        'django.contrib.auth.views.logout',
+        logout,
         name='logout',
         kwargs={'next_page': '/'}),
 
@@ -65,4 +68,4 @@ urlpatterns = patterns('',
         OwnedAchievementDetail.as_view(),
         name='ownach_detail'),
 
-)
+]

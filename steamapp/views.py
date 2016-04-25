@@ -1,7 +1,8 @@
 from django.core.urlresolvers import reverse
+from django.core import serializers
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.base import TemplateResponseMixin
 from models import Player, Game, OwnedGame, Ban, Achievement, OwnedAchievement
 
@@ -29,8 +30,9 @@ class ConnegResponseMixin(TemplateResponseMixin):
         return super(ConnegResponseMixin, self).render_to_response(context)
 
 
-def home(request):
-    return render_to_response('steamapp/home.html')
+class HomeView(TemplateView):
+    def dispatch(self, *args, **kwargs):
+        return super(HomeView, self).dispatch(*args, **kwargs)
 
 class PlayerList(ListView, ConnegResponseMixin):
     model = Player
