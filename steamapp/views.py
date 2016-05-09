@@ -36,6 +36,24 @@ class ConnegResponseMixin(TemplateResponseMixin):
         return super(ConnegResponseMixin, self).render_to_response(context)
 
 
+class LoginRequiredMixin(object):
+    @method_decorator(login_required())
+    def dispatch(self, *args, **kwargs):
+        return super(LoginRequiredMixin, self).dispatch(*args, **kwargs)
+
+
+class CheckIsOwnerMixin(object):
+    def get_object(self, *args, **kwargs):
+        obj = super(CheckIsOwnerMixin, self).get_object(*args, **kwargs)
+        if not obj.user == self.request.user:
+            raise PermissionDenied
+        return obj
+
+
+class LoginRequiredCheckIsOwnerUpdateView(LoginRequiredMixin, CheckIsOwnerMixin, UpdateView):
+    template_name = 'steamapp/form.html'
+
+
 class HomeView(TemplateView):
     def dispatch(self, *args, **kwargs):
         return super(HomeView, self).dispatch(*args, **kwargs)
@@ -52,6 +70,16 @@ class PlayerDetail(DetailView, ConnegResponseMixin):
     template_name = 'steamapp/player_detail.html'
 
 
+class PlayerCreate(LoginRequiredMixin, CreateView):
+    model = Player
+    template_name = 'steamapp/form.html'
+    form_class = PlayerForm
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super(PlayerCreate, self).form_valid(form)
+
+
 class GameList(ListView, ConnegResponseMixin):
     model = Game
     queryset = Game.objects.filter()
@@ -62,6 +90,16 @@ class GameList(ListView, ConnegResponseMixin):
 class GameDetail(DetailView, ConnegResponseMixin):
     model = Game
     template_name = 'steamapp/game_detail.html'
+
+
+class GameCreate(LoginRequiredMixin, CreateView):
+    model = Game
+    template_name = 'steamapp/form.html'
+    form_class = GameForm
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super(GameCreate, self).form_valid(form)
 
 
 class OwnedGameDetail(DetailView, ConnegResponseMixin):
@@ -89,29 +127,3 @@ class AchievementDetail(DetailView, ConnegResponseMixin):
 class OwnedAchievementDetail(DetailView, ConnegResponseMixin):
     model = OwnedAchievement
     template_name = 'steamapp/ownach_detail.html'
-
-
-class LoginRequiredMixin(object):
-    @method_decorator(login_required())
-    def dispatch(self, *args, **kwargs):
-        return super(LoginRequiredMixin, self).dispatch(*args, **kwargs)
-
-
-class PlayerCreate(LoginRequiredMixin, CreateView):
-    model = Player
-    template_name = 'steamapp/form.html'
-    form_class = PlayerForm
-
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        return super(PlayerCreate, self).form_valid(form)
-
-
-class GameCreate(LoginRequiredMixin, CreateView):
-    model = Game
-    template_name = 'steamapp/form.html'
-    form_class = GameForm
-
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        return super(GameCreate, self).form_valid(form)

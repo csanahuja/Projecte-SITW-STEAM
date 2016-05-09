@@ -2,6 +2,7 @@
 {% block content %}
 <h1>
     Players
+    {% if user.is_authenticated %}(<a href="{% url 'steamapp:player_create' %}">add</a>){% endif %}
 </h1>
 
     {% for player in player_list %}

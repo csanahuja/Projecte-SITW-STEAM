@@ -1,10 +1,13 @@
 from django.conf.urls import url
 from django.conf import settings
 from django.contrib.auth.views import login, logout
+
 from models import Player, Game, OwnedGame
 from views import PlayerList, PlayerDetail, GameList, GameDetail, \
                   OwnedGameDetail, BanDetail, AchievementList, \
                   AchievementDetail, OwnedAchievementDetail, HomeView
+from views import PlayerCreate, GameCreate
+from forms import PlayerForm, GameForm
 
 urlpatterns = [
     # Home page
@@ -33,15 +36,25 @@ urlpatterns = [
         PlayerDetail.as_view(),
         name='player_detail'),
 
+    # Create a Player: /steamapp/players/create/
+    url(r'^players/create/$',
+        PlayerCreate.as_view(),
+        name='player_create'),
+
     # List Games: /steamapp/games.json
     url(r'^games\.(?P<extension>(json|xml|html))$',
         GameList.as_view(),
         name='game_list'),
 
     # Game details, ex.: /steamapps/players/<appid>.json
-    url(r'^games/(?P<pk>\d+)\.(?P<extension>(json|xml|html))$',
+    url(r'^games/(?P<pk>\d+)(\.(?P<extension>(json|xml|html)))?$',
         GameDetail.as_view(),
         name='game_detail'),
+
+    # Create a Game: /steamapp/games/create/
+    url(r'^games/create/$',
+        GameCreate.as_view(),
+        name='game_create'),
 
     # Owned games details, ex.:  /steamapps/ownedgames/<id>.json
     url(r'^ownedgames/(?P<pk>\d+)\.(?P<extension>(json|xml|html))$',
