@@ -1,10 +1,16 @@
 from django.core.urlresolvers import reverse
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
+from django.utils.decorators import method_decorator
 from django.core import serializers
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.views.generic import DetailView, ListView, TemplateView
+from django.views.generic import CreateView, UpdateView
 from django.views.generic.base import TemplateResponseMixin
+
 from models import Player, Game, OwnedGame, Ban, Achievement, OwnedAchievement
+from forms import PlayerForm, GameForm
 
 
 class ConnegResponseMixin(TemplateResponseMixin):
@@ -83,3 +89,29 @@ class AchievementDetail(DetailView, ConnegResponseMixin):
 class OwnedAchievementDetail(DetailView, ConnegResponseMixin):
     model = OwnedAchievement
     template_name = 'steamapp/ownach_detail.html'
+
+
+class LoginRequiredMixin(object):
+    @method_decorator(login_required())
+    def dispatch(self, *args, **kwargs):
+        return super(LoginRequiredMixin, self).dispatch(*args, **kwargs)
+
+
+class PlayerCreate(LoginRequiredMixin, CreateView):
+    model = Player
+    template_name = 'steamapp/form.html'
+    form_class = PlayerForm
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super(PlayerCreate, self).form_valid(form)
+
+
+class GameCreate(LoginRequiredMixin, CreateView):
+    model = Game
+    template_name = 'steamapp/form.html'
+    form_class = GameForm
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super(GameCreate, self).form_valid(form)

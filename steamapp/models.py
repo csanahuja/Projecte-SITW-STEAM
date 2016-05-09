@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 from django.db import models
 from django.core.urlresolvers import reverse
+from django.contrib.auth.models import User
 
 class Player(models.Model):
     steamid = models.TextField(primary_key=True)
@@ -9,6 +10,7 @@ class Player(models.Model):
     privacy = models.TextField(default="private")
     country = models.TextField(blank=True, null=True)
     lastlog = models.IntegerField(default=0)
+    user = models.ForeignKey(User, default=1)
 
     def __unicode__(self):
         return self.nickname
@@ -20,6 +22,7 @@ class Player(models.Model):
 class Game(models.Model):
     appid = models.TextField(primary_key=True)
     name = models.TextField()
+    user = models.ForeignKey(User, default=1)
 
     def __unicode__(self):
         return self.name
