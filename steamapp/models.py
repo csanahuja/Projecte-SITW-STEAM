@@ -54,6 +54,7 @@ class Achievement(models.Model):
     namegame = models.TextField(blank=True, null=True)
     displayname = models.TextField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
+    user = models.ForeignKey(User, default=1)
 
     def __unicode__(self):
         return "Game: " + self.namegame + " - Achievement: " + self.displayname

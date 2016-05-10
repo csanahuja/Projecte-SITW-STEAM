@@ -10,7 +10,7 @@ from django.views.generic import CreateView, UpdateView
 from django.views.generic.base import TemplateResponseMixin
 
 from models import Player, Game, OwnedGame, Ban, Achievement, OwnedAchievement
-from forms import PlayerForm, GameForm
+from forms import PlayerForm, GameForm, AchievementForm
 
 
 class ConnegResponseMixin(TemplateResponseMixin):
@@ -57,6 +57,7 @@ class LoginRequiredCheckIsOwnerUpdateView(LoginRequiredMixin, CheckIsOwnerMixin,
 class HomeView(TemplateView):
     def dispatch(self, *args, **kwargs):
         return super(HomeView, self).dispatch(*args, **kwargs)
+
 
 class PlayerList(ListView, ConnegResponseMixin):
     model = Player
@@ -122,6 +123,16 @@ class AchievementList(ListView, ConnegResponseMixin):
 class AchievementDetail(DetailView, ConnegResponseMixin):
     model = Achievement
     template_name = 'steamapp/achievement_detail.html'
+
+
+class AchievementCreate(LoginRequiredMixin, CreateView):
+    model = Achievement
+    template_name = 'steamapp/form.html'
+    form_class = AchievementForm
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super(AchievementCreate, self).form_valid(form)
 
 
 class OwnedAchievementDetail(DetailView, ConnegResponseMixin):

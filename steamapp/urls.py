@@ -6,8 +6,8 @@ from models import Player, Game, OwnedGame
 from views import PlayerList, PlayerDetail, GameList, GameDetail, \
                   OwnedGameDetail, BanDetail, AchievementList, \
                   AchievementDetail, OwnedAchievementDetail, HomeView
-from views import PlayerCreate, GameCreate
-from forms import PlayerForm, GameForm
+from views import PlayerCreate, GameCreate, AchievementCreate
+from forms import PlayerForm, GameForm, AchievementForm
 
 urlpatterns = [
     # Home page
@@ -75,6 +75,11 @@ urlpatterns = [
     url(r'^achievements/(?P<pk>\d+)\.(?P<extension>(json|xml|html))?$',
         AchievementDetail.as_view(),
         name='achievement_detail'),
+
+    # Create a Game: /steamapp/achievements/create/
+    url(r'^achievements/create/$',
+        AchievementCreate.as_view(),
+        name='achievement_create'),
 
     # Owned Achievements details, ex.:  /steamapps/ownedachievements/<id>.json
     url(r'^ownedachievements/(?P<pk>\d+)\.(?P<extension>(json|xml|html))?$',
