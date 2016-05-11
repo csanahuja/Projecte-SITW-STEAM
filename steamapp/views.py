@@ -12,6 +12,13 @@ from django.views.generic.base import TemplateResponseMixin
 from models import Player, Game, OwnedGame, Ban, Achievement, OwnedAchievement
 from forms import PlayerForm, GameForm, AchievementForm
 
+from rest_framework import generics,permissions
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework.reverse import reverse
+
+from serializers import PlayerSerializer
+
 
 class ConnegResponseMixin(TemplateResponseMixin):
 
@@ -138,3 +145,21 @@ class AchievementCreate(LoginRequiredMixin, CreateView):
 class OwnedAchievementDetail(DetailView, ConnegResponseMixin):
     model = OwnedAchievement
     template_name = 'steamapp/ownach_detail.html'
+
+class IsOwnerOrReadOnly(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        return obj.user == request.user
+
+class APIPlayerList(generics.ListCreateAPIView):
+    permission_classes = (IsOwnerOrReadOnly,)
+    model = Player
+    queryset = Player.objects.all()
+    serializer_class = PlayerSerializer
+
+class APIPlayerDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (IsOwnerOrReadOnly,)
+    model = Player
+    queryset = Player.objects.all()
+    serializer_class = PlayerSerializer

@@ -1,2 +1,5 @@
 Django==1.9.4
 requests==2.9.1
+djangorestframework==3.3.3
+djangorestframework-xml==1.3.0
+defusedxml==0.4.1

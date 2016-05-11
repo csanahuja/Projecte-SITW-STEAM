@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'steamapp',
+    'rest_framework',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -81,6 +82,17 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+REST_FRAMEWORK  =  {
+        'DEFAULT_PERMISSION_CLASSES':  ('rest_framework.permissions.IsAuthenticatedOrReadOnly',),
+        'PAGINATE_BY':  10,
+        'DEFAULT_RENDERER_CLASSES':  (
+                'rest_framework.renderers.BrowsableAPIRenderer',
+                'rest_framework.renderers.JSONRenderer',
+                'rest_framework_xml.renderers.XMLRenderer',
+        )
+}
+
 
 
 # Password validation
