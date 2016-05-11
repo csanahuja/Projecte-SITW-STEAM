@@ -9,3 +9,9 @@ class PlayerSerializer(HyperlinkedModelSerializer):
         model  =  Player
         fields  =  ('uri', 'steamid',  'nickname',  'profileurl',  'privacy',
         'country',  'lastlog')
+
+class GameSerializer(HyperlinkedModelSerializer):
+    uri = HyperlinkedIdentityField(view_name='steamapp:game-detail')
+    class Meta:
+        model  =  Game
+        fields  =  ('uri', 'appid', 'name')

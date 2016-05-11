@@ -17,7 +17,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 
-from serializers import PlayerSerializer
+from serializers import PlayerSerializer,GameSerializer
 
 
 class ConnegResponseMixin(TemplateResponseMixin):
@@ -163,3 +163,15 @@ class APIPlayerDetail(generics.RetrieveUpdateDestroyAPIView):
     model = Player
     queryset = Player.objects.all()
     serializer_class = PlayerSerializer
+
+class APIGameList(generics.ListCreateAPIView):
+    permission_classes = (IsOwnerOrReadOnly,)
+    model = Game
+    queryset = Game.objects.all()
+    serializer_class = GameSerializer
+
+class APIGameDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (IsOwnerOrReadOnly,)
+    model = Game
+    queryset = Game.objects.all()
+    serializer_class = GameSerializer
