@@ -9,7 +9,7 @@ from views import PlayerList, PlayerDetail, GameList, GameDetail, \
 from views import PlayerCreate, GameCreate, AchievementCreate
 from forms import PlayerForm, GameForm, AchievementForm
 from views import APIPlayerList,APIPlayerDetail,APIGameList,APIGameDetail, \
-                  APIAchievementList,APIAchievementDetail
+                  APIAchievementList,APIAchievementDetail,APIOwnedGameDetail
 
 urlpatterns = [
     # Home page
@@ -87,7 +87,7 @@ urlpatterns = [
     url(r'^ownedachievements/(?P<pk>\d+)\.(?P<extension>(json|xml|html))?$',
         OwnedAchievementDetail.as_view(),
         name='ownach_detail'),
-        
+
     # API patterns
     url(r'^api/players/$',  APIPlayerList.as_view(),  name='player-list'),
     url(r'^api/players/(?P<pk>\d+)/$',
@@ -99,5 +99,7 @@ urlpatterns = [
             APIAchievementList.as_view(),  name='achievement-list'),
     url(r'^api/achievements/(?P<pk>\d+)/$',
             APIAchievementDetail.as_view(), name='achievement-detail'),
+    url(r'^api/ownedgames/(?P<pk>\d+)/$',
+            APIOwnedGameDetail.as_view(), name='ownedgame-detail'),
 
 ]
