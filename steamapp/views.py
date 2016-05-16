@@ -18,7 +18,8 @@ from rest_framework.response import Response
 from rest_framework.reverse import reverse
 
 from serializers import PlayerSerializer,GameSerializer,\
-                        AchievementSerializer,OwnedGameSerializer
+                        AchievementSerializer,OwnedGameSerializer, \
+                        OwnedAchievementSerializer
 
 
 class ConnegResponseMixin(TemplateResponseMixin):
@@ -193,3 +194,8 @@ class APIOwnedGameDetail(generics.RetrieveUpdateDestroyAPIView):
     model = OwnedGame
     queryset = OwnedGame.objects.all()
     serializer_class = OwnedGameSerializer
+
+class APIOwnedAchievementDetail(generics.RetrieveUpdateDestroyAPIView):
+    model = OwnedAchievement
+    queryset = OwnedAchievement.objects.all()
+    serializer_class = OwnedAchievementSerializer
