@@ -9,10 +9,12 @@ class PlayerSerializer(HyperlinkedModelSerializer):
     view_name='steamapp:ownedgame-detail')
     ownedachievements = HyperlinkedRelatedField(many=True, read_only=True,
     view_name='steamapp:ownedachievement-detail')
+    bans = HyperlinkedRelatedField(many=True, read_only=True,
+    view_name='steamapp:ban-detail')
     class Meta:
         model  =  Player
         fields  =  ('uri', 'steamid',  'nickname',  'profileurl',  'privacy',
-        'country',  'lastlog', 'ownedgames', 'ownedachievements')
+        'country',  'lastlog', 'ownedgames', 'ownedachievements', 'bans')
 
 class GameSerializer(HyperlinkedModelSerializer):
     uri = HyperlinkedIdentityField(view_name='steamapp:game-detail')
@@ -44,3 +46,11 @@ class OwnedAchievementSerializer(HyperlinkedModelSerializer):
     class Meta:
         model  =  OwnedAchievement
         fields  =  ('uri', 'steamid', 'achid', 'nickname', 'achieved')
+
+class BanSerializer(HyperlinkedModelSerializer):
+    uri = HyperlinkedIdentityField(view_name='steamapp:ban-detail')
+    steamid = HyperlinkedRelatedField(view_name='steamapp:player-detail', read_only=True)
+    class Meta:
+        model  =  Ban
+        fields  =  ('uri', 'steamid', 'nickname', 'communityBanned',
+        'VACBanned', 'numberOfVACBans', 'daysSinceLastBan')
