@@ -79,5 +79,4 @@ class OwnedAchievement(models.Model):
                + " - State: " + self.achieved
 
     def get_absolute_url(self):
-        return reverse('steamapp:ownach_detail', kwargs={'pk': self.pk})
-
+        return reverse('steamapp:ownedachievement_detail', kwargs={'pk': self.pk})

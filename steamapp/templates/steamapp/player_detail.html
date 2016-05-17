@@ -30,9 +30,9 @@
 </p>
 
 
-<h2> Player Games 
+<h2> Player Games
     {% if user.is_authenticated %}(<a href="{% url 'steamapp:ownedgame_create' %}">add</a>){% endif %}
-    </h2>
+</h2>
 
   {% for ownedgame in player.ownedgames.all %}
       <a href="{% url 'steamapp:ownedgame_detail' ownedgame.id %}">
@@ -41,10 +41,12 @@
   {% endfor %}
 
 
-<h2> Player Achievements </h2>
+<h2> Player Achievements
+    {% if user.is_authenticated %}(<a href="{% url 'steamapp:ownedachievement_create' %}">add</a>){% endif %}
+</h2>
 
   {% for ownach in player.ownedachievements.all %}
-      <a href="{% url 'steamapp:ownach_detail' ownach.id %}">
+      <a href="{% url 'steamapp:ownedachievement_detail' ownach.id %}">
           {{ ownach.achid.displayname }}</a><br/>
   {% empty %}<p>This player has not achievement registered</p>
   {% endfor %}
