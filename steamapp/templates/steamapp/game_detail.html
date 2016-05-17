@@ -10,7 +10,7 @@
 </p>
 
 <h2> Game Achievements
-    {% if user.is_authenticated %}(<a href="{% url 'steamapp:ownedachievements_create' %}">add</a>){% endif %}
+    {% if user.is_authenticated %}(<a href="{% url 'steamapp:ownedachievement_create' %}">add</a>){% endif %}
 </h2>
 
 {% for achievement in game.achievements.all %}
@@ -21,7 +21,7 @@
 
 
 <h2> Game Owned by
-    {% if user.is_authenticated %}(<a href="{% url 'steamapp:ownedgame_create' %}">add</a>){% endif %}
+    {% if user.is_authenticated %}(<a href="{% url 'steamapp:ownedgamegame_create' game.appid %}">add</a>){% endif %}
 </h2>
 
 {% for ownedgame in game.gamesownedby.all %}

@@ -7,9 +7,10 @@ from views import PlayerList, PlayerDetail, GameList, GameDetail, \
                   OwnedGameDetail, AchievementList, \
                   AchievementDetail, OwnedAchievementDetail, HomeView
 
-from views import PlayerCreate, GameCreate, OwnedGameCreate, AchievementCreate, OwnAchCreate
-from forms import PlayerForm, GameForm, OwnedGameForm, AchievementForm, \
-                  OwnedAchievementForm
+from views import PlayerCreate, GameCreate, OwnedGamePlayerCreate, OwnedGameGameCreate, \
+                  AchievementCreate, OwnAchCreate, OwnedGamePlayerCreate
+from forms import PlayerForm, GameForm, OwnedGamePlayerForm, OwnedGamePlayerForm, \
+                  AchievementForm, OwnedAchievementForm, OwnedGamePlayerForm
 from views import APIPlayerList,APIPlayerDetail,APIGameList,APIGameDetail, \
                   APIAchievementList,APIAchievementDetail,APIOwnedGameDetail,\
                   APIOwnedAchievementDetail
@@ -67,9 +68,16 @@ urlpatterns = [
         name='ownedgame_detail'),
 
     # Create a OwnedGame: /steamapp/ownedgames/create/
-    url(r'^ownedgames/create/$',
-        OwnedGameCreate.as_view(),
-        name='ownedgame_create'),
+    # From a Player
+    url(r'^ownedgames/player/create/(?P<pk>\d+)$',
+        OwnedGamePlayerCreate.as_view(),
+        name='ownedgameplayer_create'),
+
+    # Create a OwnedGame: /steamapp/ownedgames/create/
+    # From a Game
+    url(r'^ownedgames/game/create/(?P<pk>\d+)$',
+        OwnedGameGameCreate.as_view(),
+        name='ownedgamegame_create'),
 
     # List Achievements: /steamapp/achievements.json
     url(r'^achievements(\.(?P<extension>(json|xml)))?$',
@@ -81,7 +89,7 @@ urlpatterns = [
         AchievementDetail.as_view(),
         name='achievement_detail'),
 
-    # Create a Game: /steamapp/achievements/create/
+    # Create a Achivement: /steamapp/achievements/create/
     url(r'^achievements/create/$',
         AchievementCreate.as_view(),
         name='achievement_create'),
