@@ -2,7 +2,7 @@
 {% block content %}
 <h1>
 Achievement:
-<a href="{% url 'steamapp:achievement_detail' ownedachievement.achid.id 'html' %}">{{ ownedachievement.achid.displayname }}</a>
+<a href="{% url 'steamapp:achievement_detail' ownedachievement.achid.id %}">{{ ownedachievement.achid.displayname }}</a>
 </h1>
 
 <h2>Apiname</h2>
@@ -16,7 +16,7 @@ Steam id: {{ownedachievement.steamid.steamid}}
 </p>
 <p>
 Name:
-<a href="{% url 'steamapp:player_detail' ownedachievement.steamid.steamid 'html' %}">{{ ownedachievement.steamid.nickname}}</a>
+<a href="{% url 'steamapp:player_detail' ownedachievement.steamid.steamid %}">{{ ownedachievement.steamid.nickname}}</a>
 </p>
 
 

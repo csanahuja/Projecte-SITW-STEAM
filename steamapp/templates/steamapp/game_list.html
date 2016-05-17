@@ -6,7 +6,7 @@
 </h1>
 
     {% for game in game_list %}
-        <a href="{% url 'steamapp:game_detail' game.appid 'html' %}">
+        <a href="{% url 'steamapp:game_detail' game.appid %}">
             {{ game.name }}</a><br/>
     {% empty %}<p>No games registered yet.</p>
     {% endfor %}

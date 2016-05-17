@@ -6,7 +6,7 @@
 </h1>
 
     {% for player in player_list %}
-        <p><a href="{% url 'steamapp:player_detail' player.steamid 'html' %}">
+        <p><a href="{% url 'steamapp:player_detail' player.steamid %}">
             {{ player.nickname }}</a></p>
     {% empty %}<li>No players registered yet.</li>
     {% endfor %}

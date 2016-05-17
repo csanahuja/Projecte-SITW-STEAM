@@ -10,7 +10,7 @@ from django.views.generic import CreateView, UpdateView
 from django.views.generic.base import TemplateResponseMixin
 
 from models import Player, Game, OwnedGame, Achievement, OwnedAchievement
-from forms import PlayerForm, GameForm, AchievementForm
+from forms import PlayerForm, GameForm, OwnedGameForm, AchievementForm
 
 from rest_framework import generics,permissions
 from rest_framework.decorators import api_view
@@ -115,6 +115,16 @@ class GameCreate(LoginRequiredMixin, CreateView):
 class OwnedGameDetail(DetailView, ConnegResponseMixin):
     model = OwnedGame
     template_name = 'steamapp/ownedgame_detail.html'
+
+
+class OwnedGameCreate(LoginRequiredMixin, CreateView):
+    model = OwnedGame
+    template_name = 'steamapp/form.html'
+    form_class = OwnedGameForm
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super(OwnedGameCreate, self).form_valid(form)
 
 
 class AchievementList(ListView, ConnegResponseMixin):

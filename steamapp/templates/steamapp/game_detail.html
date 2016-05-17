@@ -12,7 +12,7 @@
 <h2> Game Achievements </h2>
 
 {% for achievement in game.achievements.all %}
-    <a href="{% url 'steamapp:achievement_detail' achievement.id 'html' %}">
+    <a href="{% url 'steamapp:achievement_detail' achievement.id %}">
         {{ achievement.displayname }}</a><br/>
 {% empty %}<p>This game either does not have achievements or have but not registered</p>
 {% endfor %}
@@ -21,7 +21,7 @@
 <h2> Game Owned by </h2>
 
 {% for ownedgame in game.gamesownedby.all %}
-    <a href="{% url 'steamapp:ownedgame_detail' ownedgame.id 'html' %}">
+    <a href="{% url 'steamapp:ownedgame_detail' ownedgame.id %}">
         {{ ownedgame.nickname }}</a><br/>
 {% empty %}<p>This game is not owned for any user</p>
 {% endfor %}

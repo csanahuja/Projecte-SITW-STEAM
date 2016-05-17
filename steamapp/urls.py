@@ -1,13 +1,14 @@
 from django.conf.urls import url
 from django.conf import settings
 from django.contrib.auth.views import login, logout
+from rest_framework.urlpatterns import format_suffix_patterns
 
-from models import Player, Game, OwnedGame
 from views import PlayerList, PlayerDetail, GameList, GameDetail, \
                   OwnedGameDetail, AchievementList, \
                   AchievementDetail, OwnedAchievementDetail, HomeView
-from views import PlayerCreate, GameCreate, AchievementCreate
-from forms import PlayerForm, GameForm, AchievementForm
+
+from views import PlayerCreate, GameCreate, OwnedGameCreate, AchievementCreate
+from forms import PlayerForm, GameForm, OwnedGameForm, AchievementForm
 from views import APIPlayerList,APIPlayerDetail,APIGameList,APIGameDetail, \
                   APIAchievementList,APIAchievementDetail,APIOwnedGameDetail,\
                   APIOwnedAchievementDetail
@@ -30,12 +31,12 @@ urlpatterns = [
         kwargs={'next_page': '/'}),
 
     # List Players: /steamapp/player.json
-    url(r'^players\.(?P<extension>(json|xml|html))?$',
+    url(r'^players(\.(?P<extension>(json|xml)))?$',
         PlayerList.as_view(),
         name='player_list'),
 
     # Player details, ex.: /steamapps/players/<steamid>.json
-    url(r'^players/(?P<pk>\d+)\.(?P<extension>(json|xml|html))?$',
+    url(r'^players/(?P<pk>\d+)(\.(?P<extension>(json|xml)))?$',
         PlayerDetail.as_view(),
         name='player_detail'),
 
@@ -45,12 +46,12 @@ urlpatterns = [
         name='player_create'),
 
     # List Games: /steamapp/games.json
-    url(r'^games\.(?P<extension>(json|xml|html))?',
+    url(r'^games(\.(?P<extension>(json|xml)))?$',
         GameList.as_view(),
         name='game_list'),
 
     # Game details, ex.: /steamapps/players/<appid>.json
-    url(r'^games/(?P<pk>\d+)\.(?P<extension>(json|xml|html))?$',
+    url(r'^games/(?P<pk>\d+)(\.(?P<extension>(json|xml)))?$',
         GameDetail.as_view(),
         name='game_detail'),
 
@@ -60,17 +61,22 @@ urlpatterns = [
         name='game_create'),
 
     # Owned games details, ex.:  /steamapps/ownedgames/<id>.json
-    url(r'^ownedgames/(?P<pk>\d+)\.(?P<extension>(json|xml|html))?$',
+    url(r'^ownedgames/(?P<pk>\d+)(\.(?P<extension>(json|xml)))?$',
         OwnedGameDetail.as_view(),
         name='ownedgame_detail'),
 
+    # Create a OwnedGame: /steamapp/ownedgames/create/
+    url(r'^ownedgames/create/$',
+        OwnedGameCreate.as_view(),
+        name='ownedgame_create'),
+
     # List Achievements: /steamapp/achievements.json
-    url(r'^achievements\.(?P<extension>(json|xml|html))?',
+    url(r'^achievements(\.(?P<extension>(json|xml)))?$',
         AchievementList.as_view(),
         name='achievement_list'),
 
     # Achievements details, ex.: /steamapps/achievements/<id>.json
-    url(r'^achievements/(?P<pk>\d+)\.(?P<extension>(json|xml|html))?$',
+    url(r'^achievements/(?P<pk>\d+)(\.(?P<extension>(json|xml)))?$',
         AchievementDetail.as_view(),
         name='achievement_detail'),
 
@@ -80,7 +86,7 @@ urlpatterns = [
         name='achievement_create'),
 
     # Owned Achievements details, ex.:  /steamapps/ownedachievements/<id>.json
-    url(r'^ownedachievements/(?P<pk>\d+)\.(?P<extension>(json|xml|html))?$',
+    url(r'^ownedachievements/(?P<pk>\d+)(\.(?P<extension>(json|xml)))?$',
         OwnedAchievementDetail.as_view(),
         name='ownach_detail'),
 
@@ -99,5 +105,7 @@ urlpatterns = [
             APIOwnedGameDetail.as_view(), name='ownedgame-detail'),
     url(r'^api/ownedachievements/(?P<pk>\d+)/$',
             APIOwnedAchievementDetail.as_view(), name='ownedachievement-detail'),
-
 ]
+
+# Format suffixes
+urlpatterns = format_suffix_patterns(urlpatterns, allowed=['api','json', 'xml'])

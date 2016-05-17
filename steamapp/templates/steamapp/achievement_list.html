@@ -6,7 +6,7 @@
 </h1>
 
     {% for achievement in achievement_list %}
-        <a href="{% url 'steamapp:achievement_detail' achievement.id 'html' %}">
+        <a href="{% url 'steamapp:achievement_detail' achievement.id %}">
             {{ achievement.displayname }}</a><br/>
     {% empty %}<p>No achievements registered yet.</p>
     {% endfor %}
