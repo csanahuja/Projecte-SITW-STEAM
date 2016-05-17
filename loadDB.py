@@ -164,18 +164,6 @@ class SteamClient():
                 oa.save()
 
 
-    def getAndSaveBans(self, steamid):
-        url = self.url_base + self.service_user + self.ban + self.api_key + \
-              self.ban2 + steamid
-        r = requests.get(url)
-        jsondata = json.loads(r.text)
-
-        ban = jsondata["players"][0]
-
-        b = Ban(steamid, steamid, self.steamids[steamid], ban["CommunityBanned"], \
-                ban["VACBanned"],ban["NumberOfVACBans"], ban["DaysSinceLastBan"])
-        b.save()
-
 
 if __name__ == "__main__":
     steamClient = SteamClient()
@@ -197,6 +185,3 @@ if __name__ == "__main__":
     for steamid in steamClient.steamids.keys():
         steamClient.getAndSaveOwnedAchievements(steamid)
 
-    print "Adding Ban-State for each User - This operation may take some minutes"
-    for steamid in steamClient.steamids.keys():
-        steamClient.getAndSaveBans(steamid)

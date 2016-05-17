@@ -6,5 +6,4 @@ admin.site.register(models.Game)
 admin.site.register(models.OwnedGame)
 admin.site.register(models.Achievement)
 admin.site.register(models.OwnedAchievement)
-admin.site.register(models.Ban)
 # Register your models here.

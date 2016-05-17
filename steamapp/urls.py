@@ -4,13 +4,13 @@ from django.contrib.auth.views import login, logout
 
 from models import Player, Game, OwnedGame
 from views import PlayerList, PlayerDetail, GameList, GameDetail, \
-                  OwnedGameDetail, BanDetail, AchievementList, \
+                  OwnedGameDetail, AchievementList, \
                   AchievementDetail, OwnedAchievementDetail, HomeView
 from views import PlayerCreate, GameCreate, AchievementCreate
 from forms import PlayerForm, GameForm, AchievementForm
 from views import APIPlayerList,APIPlayerDetail,APIGameList,APIGameDetail, \
                   APIAchievementList,APIAchievementDetail,APIOwnedGameDetail,\
-                  APIOwnedAchievementDetail,APIBanDetail
+                  APIOwnedAchievementDetail
 
 urlpatterns = [
     # Home page
@@ -64,11 +64,6 @@ urlpatterns = [
         OwnedGameDetail.as_view(),
         name='ownedgame_detail'),
 
-    # Ban details, ex.:  /steamapps/players/<steamid>/baninfo.json
-    url(r'^banstatus/(?P<pk>\d+)\.(?P<extension>(json|xml|html))?$',
-        BanDetail.as_view(),
-        name='ban_detail'),
-
     # List Achievements: /steamapp/achievements.json
     url(r'^achievements\.(?P<extension>(json|xml|html))?',
         AchievementList.as_view(),
@@ -104,7 +99,5 @@ urlpatterns = [
             APIOwnedGameDetail.as_view(), name='ownedgame-detail'),
     url(r'^api/ownedachievements/(?P<pk>\d+)/$',
             APIOwnedAchievementDetail.as_view(), name='ownedachievement-detail'),
-    url(r'^api/banstatus/(?P<pk>\d+)/$',
-            APIBanDetail.as_view(), name='ban-detail'),
 
 ]

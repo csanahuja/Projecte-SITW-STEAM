@@ -9,7 +9,7 @@ from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic import CreateView, UpdateView
 from django.views.generic.base import TemplateResponseMixin
 
-from models import Player, Game, OwnedGame, Ban, Achievement, OwnedAchievement
+from models import Player, Game, OwnedGame, Achievement, OwnedAchievement
 from forms import PlayerForm, GameForm, AchievementForm
 
 from rest_framework import generics,permissions
@@ -19,7 +19,7 @@ from rest_framework.reverse import reverse
 
 from serializers import PlayerSerializer,GameSerializer,\
                         AchievementSerializer,OwnedGameSerializer, \
-                        OwnedAchievementSerializer,BanSerializer
+                        OwnedAchievementSerializer
 
 
 class ConnegResponseMixin(TemplateResponseMixin):
@@ -117,11 +117,6 @@ class OwnedGameDetail(DetailView, ConnegResponseMixin):
     template_name = 'steamapp/ownedgame_detail.html'
 
 
-class BanDetail(DetailView, ConnegResponseMixin):
-    model = Ban
-    template_name = 'steamapp/ban_detail.html'
-
-
 class AchievementList(ListView, ConnegResponseMixin):
     model = Achievement
     queryset = Achievement.objects.filter()
@@ -199,8 +194,3 @@ class APIOwnedAchievementDetail(generics.RetrieveUpdateDestroyAPIView):
     model = OwnedAchievement
     queryset = OwnedAchievement.objects.all()
     serializer_class = OwnedAchievementSerializer
-
-class APIBanDetail(generics.RetrieveUpdateDestroyAPIView):
-    model = Ban
-    queryset = Ban.objects.all()
-    serializer_class = BanSerializer
