@@ -24,11 +24,11 @@ Name:
 </p>
 
 <h2> Achievement registered for
-    {% if user.is_authenticated %}(<a href="{% url 'steamapp:ownedachievements_create' %}">add</a>){% endif %}
+    {% if user.is_authenticated %}(<a href="{% url 'steamapp:ownedachievementach_create' achievement.id %}">add</a>){% endif %}
 </h2>
 
 {% for ownach in achievement.achievementsownedby.all %}
-    <a href="{% url 'steamapp:ownedachievements_detail' ownach.id %}">
+    <a href="{% url 'steamapp:ownedachievement_detail' ownach.id %}">
         {{ ownach.steamid.nickname }}</a><br/>
 {% empty %}<p>This achievement is not registered in any player</p>
 {% endfor %}

@@ -10,7 +10,7 @@
 </p>
 
 <h2> Game Achievements
-    {% if user.is_authenticated %}(<a href="{% url 'steamapp:ownedachievement_create' %}">add</a>){% endif %}
+    {% if user.is_authenticated %}(<a href="{% url 'steamapp:achievementgame_create' game.appid %}">add</a>){% endif %}
 </h2>
 
 {% for achievement in game.achievements.all %}

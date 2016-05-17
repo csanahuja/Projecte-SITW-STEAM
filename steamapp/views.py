@@ -11,7 +11,8 @@ from django.views.generic.base import TemplateResponseMixin
 
 from models import Player, Game, OwnedGame, Achievement, OwnedAchievement
 from forms import PlayerForm, GameForm, OwnedGamePlayerForm, OwnedGameGameForm, \
-                  AchievementForm, OwnedAchievementForm, OwnedGamePlayerForm
+                  AchievementForm, OwnedAchievementPlayerForm, OwnedAchievementAchForm, \
+                  AchievementGameForm
 
 from rest_framework import generics,permissions
 from rest_framework.decorators import api_view
@@ -162,20 +163,44 @@ class AchievementCreate(LoginRequiredMixin, CreateView):
         form.instance.user = self.request.user
         return super(AchievementCreate, self).form_valid(form)
 
+class AchievementGameCreate(LoginRequiredMixin, CreateView):
+    model = Achievement
+    template_name = 'steamapp/form.html'
+    form_class = AchievementGameForm
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        form.instance.appid = Game.objects.get(appid=self.kwargs['pk'])
+        form.instance.gamename = Game.objects.get(appid=self.kwargs['pk'])
+        return super(AchievementGameCreate, self).form_valid(form)
+
 
 class OwnedAchievementDetail(DetailView, ConnegResponseMixin):
     model = OwnedAchievement
     template_name = 'steamapp/ownach_detail.html'
 
 
-class OwnAchCreate(LoginRequiredMixin, CreateView):
+class OwnAchPlayerCreate(LoginRequiredMixin, CreateView):
     model = OwnedAchievement
     template_name = 'steamapp/form.html'
-    form_class = OwnedAchievementForm
+    form_class = OwnedAchievementPlayerForm
 
     def form_valid(self, form):
         form.instance.user = self.request.user
-        return super(OwnAchCreate, self).form_valid(form)
+        form.instance.steamid = Player.objects.get(steamid=self.kwargs['pk'])
+        form.instance.nickname = Player.objects.get(steamid=self.kwargs['pk'])
+        return super(OwnAchPlayerCreate, self).form_valid(form)
+
+
+class OwnAchAchCreate(LoginRequiredMixin, CreateView):
+    model = OwnedAchievement
+    template_name = 'steamapp/form.html'
+    form_class = OwnedAchievementAchForm
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        form.instance.achid = Achievement.objects.get(id=self.kwargs['pk'])
+        return super(OwnAchAchCreate, self).form_valid(form)
 
 
 class IsOwnerOrReadOnly(permissions.BasePermission):
