@@ -249,11 +249,13 @@ class APIAchievementDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = AchievementSerializer
 
 class APIOwnedGameDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (IsOwnerOrReadOnly,)
     model = OwnedGame
     queryset = OwnedGame.objects.all()
     serializer_class = OwnedGameSerializer
 
 class APIOwnedAchievementDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (IsOwnerOrReadOnly,)
     model = OwnedAchievement
     queryset = OwnedAchievement.objects.all()
     serializer_class = OwnedAchievementSerializer
