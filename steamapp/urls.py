@@ -3,12 +3,18 @@ from django.conf import settings
 from django.contrib.auth.views import login, logout
 from rest_framework.urlpatterns import format_suffix_patterns
 
+from models import Player
+
+from forms import PlayerForm
+
 from views import PlayerList, PlayerDetail, GameList, GameDetail, \
                   OwnedGameDetail, AchievementList, \
                   AchievementDetail, OwnedAchievementDetail, HomeView
 
 from views import PlayerCreate, GameCreate, OwnedGamePlayerCreate, OwnedGameGameCreate, \
                   AchievementCreate, OwnAchPlayerCreate, OwnAchAchCreate, AchievementGameCreate
+
+from views import LoginRequiredCheckIsOwnerUpdateView, LoginRequiredCheckIsOwnerDeleteView
 
 from views import APIPlayerList,APIPlayerDetail,APIGameList,APIGameDetail, \
                   APIAchievementList,APIAchievementDetail,APIOwnedGameDetail,\
@@ -36,7 +42,7 @@ urlpatterns = [
         PlayerList.as_view(),
         name='player_list'),
 
-    # Player details, ex.: /steamapps/players/<steamid>.json
+    # Player details, /steamapps/players/<steamid>.json
     url(r'^players/(?P<pk>\d+)(\.(?P<extension>(json|xml)))?$',
         PlayerDetail.as_view(),
         name='player_detail'),
@@ -45,6 +51,19 @@ urlpatterns = [
     url(r'^players/create/$',
         PlayerCreate.as_view(),
         name='player_create'),
+
+    # Edit a Player, /steamapp/players/<steamid>/edit/
+    url(r'^players/(?P<pk>\d+)/edit/$',
+        LoginRequiredCheckIsOwnerUpdateView.as_view(
+            model=Player,
+            form_class=PlayerForm),
+        name='player_edit'),
+    
+    # Delete a Player, /steamapp/players/<steamid>/delete/
+    url(r'^players/(?P<pkr>\d+)/delete/$',
+        LoginRequiredCheckIsOwnerDeleteView.as_view(
+            model=Player),
+        name='player_delete'),
 
     # List Games: /steamapp/games.json
     url(r'^games(\.(?P<extension>(json|xml)))?$',
@@ -66,13 +85,13 @@ urlpatterns = [
         OwnedGameDetail.as_view(),
         name='ownedgame_detail'),
 
-    # Create a OwnedGame: /steamapp/ownedgames/player/create/
+    # Create a OwnedGame: /steamapp/ownedgames/player/create/<steamid>
     # From a Player
     url(r'^ownedgames/player/create/(?P<pk>\d+)$',
         OwnedGamePlayerCreate.as_view(),
         name='ownedgameplayer_create'),
 
-    # Create a OwnedGame: /steamapp/ownedgames/game/create/
+    # Create a OwnedGame: /steamapp/ownedgames/game/create/<appid>
     # From a Game
     url(r'^ownedgames/game/create/(?P<pk>\d+)$',
         OwnedGameGameCreate.as_view(),
@@ -93,7 +112,7 @@ urlpatterns = [
         AchievementCreate.as_view(),
         name='achievement_create'),
 
-    # Create a Achievement: /steamapp/achievements/game/create/
+    # Create a Achievement: /steamapp/achievements/game/create/<appid>
     # From a Game
     url(r'^achievements/game/create/(?P<pk>\d+)$',
         AchievementGameCreate.as_view(),
@@ -104,13 +123,13 @@ urlpatterns = [
         OwnedAchievementDetail.as_view(),
         name='ownedachievement_detail'),
 
-    # Create a OwnedAchievement: /steamapp/ownedachievements/player/create/
+    # Create a OwnedAchievement: /steamapp/ownedachievements/player/create/<steamid>
     # From a Player
     url(r'^ownedachievements/player/create/(?P<pk>\d+)$',
         OwnAchPlayerCreate.as_view(),
         name='ownedachievementplayer_create'),
 
-    # Create a OwnedAchievement: /steamapp/ownedachievements/achievement/create/
+    # Create a OwnedAchievement: /steamapp/ownedachievements/achievement/create/<id>
     # From a Achievement
     url(r'^ownedachievements/achievement/create/(?P<pk>\d+)$',
         OwnAchAchCreate.as_view(),

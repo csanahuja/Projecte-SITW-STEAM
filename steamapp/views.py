@@ -6,7 +6,7 @@ from django.core import serializers
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.views.generic import DetailView, ListView, TemplateView
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import CreateView, UpdateView, DeleteView
 from django.views.generic.base import TemplateResponseMixin
 
 from models import Player, Game, OwnedGame, Achievement, OwnedAchievement
@@ -65,6 +65,9 @@ class LoginRequiredCheckIsOwnerUpdateView(LoginRequiredMixin, CheckIsOwnerMixin,
     template_name = 'steamapp/form.html'
 
 
+class LoginRequiredCheckIsOwnerDeleteView(LoginRequiredMixin, CheckIsOwnerMixin, DeleteView):
+    success_url = 'home'
+    
 class HomeView(TemplateView):
     def dispatch(self, *args, **kwargs):
         return super(HomeView, self).dispatch(*args, **kwargs)
