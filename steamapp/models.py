@@ -13,7 +13,7 @@ class Player(models.Model):
     user = models.ForeignKey(User, default=1)
 
     def __unicode__(self):
-        return str(self.nickname)
+        return self.nickname
 
     def get_absolute_url(self):
         return reverse('steamapp:player_detail', kwargs={'pk': self.pk})
@@ -25,7 +25,7 @@ class Game(models.Model):
     user = models.ForeignKey(User, default=1)
 
     def __unicode__(self):
-        return str(self.name)
+        return self.name
 
     def get_absolute_url(self):
         return reverse('steamapp:game_detail', kwargs={'pk': self.pk})

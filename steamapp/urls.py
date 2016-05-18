@@ -3,9 +3,9 @@ from django.conf import settings
 from django.contrib.auth.views import login, logout
 from rest_framework.urlpatterns import format_suffix_patterns
 
-from models import Player
+from models import Player, Game, Achievement, OwnedGame, OwnedAchievement
 
-from forms import PlayerForm
+from forms import PlayerForm, GameForm, AchievementForm, OwnedGameForm, OwnedAchievementForm
 
 from views import PlayerList, PlayerDetail, GameList, GameDetail, \
                   OwnedGameDetail, AchievementList, \
@@ -80,6 +80,13 @@ urlpatterns = [
         GameCreate.as_view(),
         name='game_create'),
 
+    # Edit a Game, /steamapp/games/<appid>/edit/
+    url(r'^games/(?P<pk>\d+)/edit/$',
+        LoginRequiredCheckIsOwnerUpdateView.as_view(
+            model=Game,
+            form_class=GameForm),
+        name='game_edit'),
+
     # Owned games details, ex.:  /steamapps/ownedgames/<id>.json
     url(r'^ownedgames/(?P<pk>\d+)(\.(?P<extension>(json|xml)))?$',
         OwnedGameDetail.as_view(),
@@ -96,6 +103,13 @@ urlpatterns = [
     url(r'^ownedgames/game/create/(?P<pk>\d+)$',
         OwnedGameGameCreate.as_view(),
         name='ownedgamegame_create'),
+
+    # Edit a OwnedGame, /steamapp/ownedgames/<id>/edit/
+    url(r'^ownedgames/(?P<pk>\d+)/edit/$',
+        LoginRequiredCheckIsOwnerUpdateView.as_view(
+            model=OwnedGame,
+            form_class=OwnedGameForm),
+        name='ownedgame_edit'),
 
     # List Achievements: /steamapp/achievements.json
     url(r'^achievements(\.(?P<extension>(json|xml)))?$',
@@ -118,6 +132,13 @@ urlpatterns = [
         AchievementGameCreate.as_view(),
         name='achievementgame_create'),
 
+    # Edit a Achievement, /steamapp/achievements/<id>/edit/
+    url(r'^achievements/(?P<pk>\d+)/edit/$',
+        LoginRequiredCheckIsOwnerUpdateView.as_view(
+            model=Achievement,
+            form_class=AchievementForm),
+        name='achievement_edit'),
+
     # Owned Achievements details, ex.:  /steamapps/ownedachievements/<id>.json
     url(r'^ownedachievements/(?P<pk>\d+)(\.(?P<extension>(json|xml)))?$',
         OwnedAchievementDetail.as_view(),
@@ -134,6 +155,13 @@ urlpatterns = [
     url(r'^ownedachievements/achievement/create/(?P<pk>\d+)$',
         OwnAchAchCreate.as_view(),
         name='ownedachievementach_create'),
+
+    # Edit a OwnedAchievement, /steamapp/ownedachievements/<id>/edit/
+    url(r'^ownedachievements/(?P<pk>\d+)/edit/$',
+        LoginRequiredCheckIsOwnerUpdateView.as_view(
+            model=OwnedAchievement,
+            form_class=OwnedAchievementForm),
+        name='ownedachievement_edit'),
 
 
     # API patterns

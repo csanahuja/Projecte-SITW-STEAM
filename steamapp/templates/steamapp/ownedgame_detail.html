@@ -2,9 +2,13 @@
 {% block content %}
 <h1>
 <p>
-<a href="{% url 'steamapp:game_detail' ownedgame.appid.appid %}">{{ ownedgame.appid.name}}</a>
-Owned by
-<a href="{% url 'steamapp:player_detail' ownedgame.steamid.steamid %}">{{ ownedgame.steamid.nickname }}</a></p>
+    <a href="{% url 'steamapp:game_detail' ownedgame.appid.appid %}">{{ ownedgame.gamename}}</a>
+    Owned by
+    <a href="{% url 'steamapp:player_detail' ownedgame.steamid.steamid %}">{{ ownedgame.nickname }}</a></p>
+
+    {% if user == ownedgame.user %}
+        (<a href="{% url 'steamapp:ownedgame_edit' ownedgame.id %}">edit</a>)
+    {% endif %}
 </h1>
 
 <h2>Steam id 64 bits</h2>

@@ -2,6 +2,9 @@
 {% block content %}
 <h1>
     {{ game.name }}
+    {% if user == game.user %}
+        (<a href="{% url 'steamapp:game_edit' game.appid %}">edit</a>)
+    {% endif %}
 </h1>
 
 <h2>Appid</h2>
@@ -10,7 +13,9 @@
 </p>
 
 <h2> Game Achievements
-    {% if user.is_authenticated %}(<a href="{% url 'steamapp:achievementgame_create' game.appid %}">add</a>){% endif %}
+    {% if user.is_authenticated %}
+        (<a href="{% url 'steamapp:achievementgame_create' game.appid %}">add</a>)
+    {% endif %}
 </h2>
 
 {% for achievement in game.achievements.all %}
@@ -21,7 +26,9 @@
 
 
 <h2> Game Owned by
-    {% if user.is_authenticated %}(<a href="{% url 'steamapp:ownedgamegame_create' game.appid %}">add</a>){% endif %}
+    {% if user.is_authenticated %}
+        (<a href="{% url 'steamapp:ownedgamegame_create' game.appid %}">add</a>)
+    {% endif %}
 </h2>
 
 {% for ownedgame in game.gamesownedby.all %}

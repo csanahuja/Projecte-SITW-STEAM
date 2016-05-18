@@ -19,17 +19,27 @@ class AchievementForm(ModelForm):
 class AchievementGameForm(ModelForm):
     class Meta:
         model = Achievement
-        exclude = ('user','appid','gamename')
+        exclude = ('user','appid','gamename',)
+
+class OwnedGameForm(ModelForm):
+    class Meta:
+        model = OwnedGame
+        exclude = ('user',)
 
 class OwnedGamePlayerForm(ModelForm):
     class Meta:
         model = OwnedGame
-        exclude = ('user','steamid','nickname')
+        exclude = ('user','steamid','nickname',)
 
 class OwnedGameGameForm(ModelForm):
     class Meta:
         model = OwnedGame
-        exclude = ('user','appid','gamename')
+        exclude = ('user','appid','gamename',)
+
+class OwnedAchievementForm(ModelForm):
+    class Meta:
+        model = OwnedAchievement
+        exclude = ('user',)
 
 class OwnedAchievementPlayerForm(ModelForm):
     class Meta:
@@ -39,4 +49,4 @@ class OwnedAchievementPlayerForm(ModelForm):
 class OwnedAchievementAchForm(ModelForm):
     class Meta:
         model = OwnedAchievement
-        exclude = ('user','achid')
+        exclude = ('user','achid',)
