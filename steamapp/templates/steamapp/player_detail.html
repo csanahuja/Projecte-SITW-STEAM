@@ -55,7 +55,7 @@
   {% for ownach in player.ownedachievements.all %}
       <a href="{% url 'steamapp:ownedachievement_detail' ownach.id %}">
           {{ ownach.achid.displayname }}</a><br/>
-  {% empty %}<p>This player has not achievement registered</p>
+  {% empty %}<p>This player has not achievements registered</p>
   {% endfor %}
 
 

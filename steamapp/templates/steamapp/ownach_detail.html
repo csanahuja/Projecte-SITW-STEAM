@@ -1,10 +1,17 @@
 {% extends "steamapp/base.html" %}
 {% block content %}
 <h1>
-Owned Achievement:
-<a href="{% url 'steamapp:achievement_detail' ownedachievement.achid.id %}">{{ ownedachievement.achid.displayname }}</a>
+    Achievement:
+    <a href="{% url 'steamapp:achievement_detail' ownedachievement.achid.id %}"> {{ ownedachievement.achid.displayname }}</a>
+    Owned by Player:
+    <a href="{% url 'steamapp:player_detail' ownedachievement.steamid.steamid %}">{{ ownedachievement.nickname}}</a>
+
     {% if user == ownedachievement.user %}
         (<a href="{% url 'steamapp:ownedachievement_edit' ownedachievement.id %}">edit</a>)
+    {% endif %}
+
+    {% if user == ownedachievement.user %}
+        (<a href="{% url 'steamapp:ownedachievement_delete' ownedachievement.id %}">delete</a>)
     {% endif %}
 </h1>
 
@@ -13,13 +20,12 @@ Owned Achievement:
     {{ ownedachievement.achid.apiname }}<br/>
 </p>
 
-<h2>Player</h2>
+<h2>Player Info</h2>
 <p>
 Steam id: {{ownedachievement.steamid.steamid}}
 </p>
 <p>
-Name:
-<a href="{% url 'steamapp:player_detail' ownedachievement.steamid.steamid %}">{{ ownedachievement.nickname}}</a>
+Name: {{ ownedachievement.nickname}}</a>
 </p>
 
 

@@ -5,6 +5,10 @@
     {% if user == game.user %}
         (<a href="{% url 'steamapp:game_edit' game.appid %}">edit</a>)
     {% endif %}
+
+    {% if user == game.user %}
+        (<a href="{% url 'steamapp:game_delete' game.appid %}">delete</a>)
+    {% endif %}
 </h1>
 
 <h2>Appid</h2>

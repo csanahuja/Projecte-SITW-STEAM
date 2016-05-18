@@ -60,7 +60,6 @@ urlpatterns = [
             form_class=PlayerForm),
         name='player_edit'),
 
-    # To modificate
     # Delete a Player, /steamapp/players/<steamid>/delete/
     url(r'^players/(?P<pk>\d+)/delete/$',
         LoginRequiredCheckIsOwnerDeleteView.as_view(
@@ -90,6 +89,13 @@ urlpatterns = [
             form_class=GameForm),
         name='game_edit'),
 
+    # Delete a Game, /steamapp/games/<appid>/delete/
+    url(r'^games/(?P<pk>\d+)/delete/$',
+        LoginRequiredCheckIsOwnerDeleteView.as_view(
+           model=Game,
+           success_url= reverse_lazy('steamapp:game_list')),
+        name='game_delete'),
+
     # Owned games details, ex.:  /steamapps/ownedgames/<id>.json
     url(r'^ownedgames/(?P<pk>\d+)(\.(?P<extension>(json|xml)))?$',
         OwnedGameDetail.as_view(),
@@ -113,6 +119,13 @@ urlpatterns = [
             model=OwnedGame,
             form_class=OwnedGameForm),
         name='ownedgame_edit'),
+
+    # Delete a OwnedGame, /steamapp/ownedgames/<id>/delete/
+    url(r'^ownedgames/(?P<pk>\d+)/delete/$',
+        LoginRequiredCheckIsOwnerDeleteView.as_view(
+           model=OwnedGame,
+           success_url = reverse_lazy('steamapp:home')),
+        name='ownedgame_delete'),
 
     # List Achievements: /steamapp/achievements.json
     url(r'^achievements(\.(?P<extension>(json|xml)))?$',
@@ -142,6 +155,13 @@ urlpatterns = [
             form_class=AchievementForm),
         name='achievement_edit'),
 
+    # Delete a Achievement, /steamapp/achievements/<id>/delete/
+    url(r'^achievements/(?P<pk>\d+)/delete/$',
+        LoginRequiredCheckIsOwnerDeleteView.as_view(
+           model=Achievement,
+           success_url= reverse_lazy('steamapp:achievement_list')),
+        name='achievement_delete'),
+
     # Owned Achievements details, ex.:  /steamapps/ownedachievements/<id>.json
     url(r'^ownedachievements/(?P<pk>\d+)(\.(?P<extension>(json|xml)))?$',
         OwnedAchievementDetail.as_view(),
@@ -165,6 +185,13 @@ urlpatterns = [
             model=OwnedAchievement,
             form_class=OwnedAchievementForm),
         name='ownedachievement_edit'),
+
+    # Delete a OwnedAchievement, /steamapp/ownedachievements/<id>/delete/
+    url(r'^ownedachievements/(?P<pk>\d+)/delete/$',
+        LoginRequiredCheckIsOwnerDeleteView.as_view(
+           model=OwnedAchievement,
+           success_url = reverse_lazy('steamapp:home')),
+        name='ownedachievement_delete'),
 
 
     # API patterns

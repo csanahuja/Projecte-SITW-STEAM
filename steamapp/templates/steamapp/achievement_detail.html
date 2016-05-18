@@ -5,6 +5,10 @@
     {% if user == achievement.user %}
         (<a href="{% url 'steamapp:achievement_edit' achievement.id %}">edit</a>)
     {% endif %}
+
+    {% if user == achievement.user %}
+        (<a href="{% url 'steamapp:achievement_delete' achievement.id %}">delete</a>)
+    {% endif %}
 </h1>
 
 <h2>Apiname</h2>

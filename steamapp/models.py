@@ -43,7 +43,7 @@ class OwnedGame(models.Model):
         unique_together = (('steamid', 'appid'),)
 
     def __unicode__(self):
-        return "Player: "+ str(self.nickname) + " Game: " + str(self.gamename)
+        return "{ Player: " + str(self.nickname) + ", Game: " + str(self.gamename) + " }"
 
     def get_absolute_url(self):
         return reverse('steamapp:ownedgame_detail', kwargs={'pk': self.pk})
@@ -58,7 +58,7 @@ class Achievement(models.Model):
     user = models.ForeignKey(User, default=1)
 
     def __unicode__(self):
-        return "Game: " + str(self.gamename) + " - Achievement: " + str(self.displayname)
+        return  str(self.displayname)
 
     def get_absolute_url(self):
         return reverse('steamapp:achievement_detail', kwargs={'pk': self.pk})
@@ -75,8 +75,8 @@ class OwnedAchievement(models.Model):
         unique_together = (('steamid', 'achid'),)
 
     def __unicode__(self):
-        return "Player: " + str(self.nickname) + " - " + str(self.achid.displayname) \
-               + " - State: " + str(self.achieved)
+        return "{ Player: " + self.nickname + " - " + str(self.achid.displayname) \
+               + " - State: " + str(self.achieved) + " }"
 
     def get_absolute_url(self):
         return reverse('steamapp:ownedachievement_detail', kwargs={'pk': self.pk})
