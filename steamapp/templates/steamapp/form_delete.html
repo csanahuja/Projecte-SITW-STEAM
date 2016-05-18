@@ -2,18 +2,9 @@
 {% load staticfiles %}
 
 {% block content %}
-
-    <form action="" method="post">
-    {% csrf_token %}
-    {% trans 'The following objects as well as their related objects will be deleted. Are you sure?' %}
-    <ul>
-        {% for item in object %}
-            <input type="hidden" value="{{ item.id }}" name="itemsToDelete" />
-            <li><a href="{{ item.get_absolute_url }}">{{ item }}</a></li>
-        {% endfor %}
-    </ul>
-    <input type="submit" class="btn btn-primary" value="{% trans 'Confirm deletion' %}" name="confirm_delete" />
-    <input type="submit" class="btn btn-primary" value="{% trans 'Cancel' %}" name="cancel"/>
+    <h1> Are you sure you want to delete {{ object }}? </h1>
+    <form method="POST" action="">
+        {% csrf_token %}
+        <input type="submit" value="Yes" />
     </form>
-
 {% endblock %}

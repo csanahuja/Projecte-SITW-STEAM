@@ -2,6 +2,7 @@ from django.conf.urls import url
 from django.conf import settings
 from django.contrib.auth.views import login, logout
 from rest_framework.urlpatterns import format_suffix_patterns
+from django.core.urlresolvers import reverse_lazy
 
 from models import Player, Game, Achievement, OwnedGame, OwnedAchievement
 
@@ -58,14 +59,13 @@ urlpatterns = [
             model=Player,
             form_class=PlayerForm),
         name='player_edit'),
-    
+
     # To modificate
     # Delete a Player, /steamapp/players/<steamid>/delete/
-    url(r'^players/(?P<pkr>\d+)/delete/$',
-        DeleteView.as_view(    
-           model=Photo,
-           success_url='steamapp',
-           template_name='steamapp/delete_form'),
+    url(r'^players/(?P<pk>\d+)/delete/$',
+        LoginRequiredCheckIsOwnerDeleteView.as_view(
+           model=Player,
+           success_url= reverse_lazy('steamapp:player_list')),
         name='player_delete'),
 
     # List Games: /steamapp/games.json
