@@ -1,5 +1,6 @@
 {% extends "steamapp/base.html" %}
 {% block content %}
+<h1> <a href="{% url 'steamapp:game_list' %}"> List of Games </a> > Game: </h1>
 <h1>
     {{ game.name }}
     {% if user == game.user %}
