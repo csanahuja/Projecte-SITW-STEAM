@@ -22,5 +22,4 @@ from django.core.urlresolvers import reverse_lazy
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^steamapp/', include('steamapp.urls', namespace='steamapp')),
-    url(r'',RedirectView.as_view(url='steamapp/')),
 ]

@@ -12,9 +12,10 @@
   <h2 align="right">
     {% block header %}
         {% if user.is_authenticated %}
-            <p>Welcome, {{ user.username }}  <a href="{% url 'steamapp:logout' %}"> [Log out]</a></p>
+            <p>Welcome, {{ user.username }}  <a href="{% url 'steamapp:logout' %}?next={{request.path}}"> [Log out]</a></p>
         {% else %}
-            <p>Welcome, Guest <a href="{% url 'steamapp:login' %}"> [Log in]</a></p>
+            <p>Welcome, Guest <a href="{% url 'steamapp:login' %}?next={{request.path}}"> [Log in]</a></p>
+
         {% endif %}
     {% endblock %}
   </h2>

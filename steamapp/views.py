@@ -8,6 +8,7 @@ from django.shortcuts import render_to_response
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic import CreateView, UpdateView, DeleteView
 from django.views.generic.base import TemplateResponseMixin
+from django.core.urlresolvers import reverse_lazy
 
 from models import Player, Game, OwnedGame, Achievement, OwnedAchievement
 from forms import PlayerForm, GameForm, OwnedGamePlayerForm, OwnedGameGameForm, \
@@ -66,7 +67,11 @@ class LoginRequiredCheckIsOwnerUpdateView(LoginRequiredMixin, CheckIsOwnerMixin,
 
 
 class LoginRequiredCheckIsOwnerDeleteView(LoginRequiredMixin, CheckIsOwnerMixin, DeleteView):
-    success_url = 'home'
+    template_name = 'steamapp/delete_form.html'
+    success_url = reverse_lazy('player_list')
+
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
     
 class HomeView(TemplateView):
     def dispatch(self, *args, **kwargs):

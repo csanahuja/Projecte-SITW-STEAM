@@ -59,10 +59,13 @@ urlpatterns = [
             form_class=PlayerForm),
         name='player_edit'),
     
+    # To modificate
     # Delete a Player, /steamapp/players/<steamid>/delete/
     url(r'^players/(?P<pkr>\d+)/delete/$',
-        LoginRequiredCheckIsOwnerDeleteView.as_view(
-            model=Player),
+        DeleteView.as_view(    
+           model=Photo,
+           success_url='steamapp',
+           template_name='steamapp/delete_form'),
         name='player_delete'),
 
     # List Games: /steamapp/games.json
