@@ -15,6 +15,7 @@ from forms import PlayerForm, GameForm, OwnedGamePlayerForm, OwnedGameGameForm, 
                   AchievementGameForm
 
 from rest_framework import generics,permissions
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
@@ -206,14 +207,14 @@ class OwnAchAchCreate(LoginRequiredMixin, CreateView):
         return super(OwnAchAchCreate, self).form_valid(form)
 
 
-class IsOwnerOrReadOnly(permissions.BasePermission):
+class IsOwnerOrReadOnly(permissions.IsAuthenticatedOrReadOnly):
     def has_object_permission(self, request, view, obj):
         if request.method in permissions.SAFE_METHODS:
             return True
         return obj.user == request.user
 
 class APIPlayerList(generics.ListCreateAPIView):
-    permission_classes = (IsOwnerOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     model = Player
     queryset = Player.objects.all()
     serializer_class = PlayerSerializer
@@ -225,7 +226,7 @@ class APIPlayerDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = PlayerSerializer
 
 class APIGameList(generics.ListCreateAPIView):
-    permission_classes = (IsOwnerOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     model = Game
     queryset = Game.objects.all()
     serializer_class = GameSerializer
@@ -237,7 +238,7 @@ class APIGameDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = GameSerializer
 
 class APIAchievementList(generics.ListCreateAPIView):
-    permission_classes = (IsOwnerOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     model = Achievement
     queryset = Achievement.objects.all()
     serializer_class = AchievementSerializer
