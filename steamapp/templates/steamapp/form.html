@@ -2,6 +2,15 @@
 {% load staticfiles %}
 
 {% block content %}
+  <script>
+        $(function() {
+            $.getJSON("{% static "countries.json" %}", {}, function (countries) {
+                $("#id_country").autocomplete({
+                    source: countries
+                  });
+            });
+        });
+    </script>
 
     <form method="post" enctype="multipart/form-data" action="">
         {% csrf_token %}
