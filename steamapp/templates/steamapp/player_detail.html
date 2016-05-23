@@ -1,8 +1,23 @@
 {% extends "steamapp/base.html" %}
+{%  block  title  %}Player - {{  player.nickname  }} {%  endblock  %}
 {% block content %}
-<h1> <a href="{% url 'steamapp:player_list' %}"> List of Players </a> > Player: </h1>
+
+<div id="sidebar">
+<h2 align="left">
+    {% block sidebar %}
+    <ul><li>
+        <a href="/steamapp">Home </a> >
+        <a href="{% url 'steamapp:player_list' %}"> List of Players </a> > Player:
+    </li></ul>
+    {% endblock %}
+</h2>
+</div>
+
+<span vocab="http://schema.org/"  typeof="Person">
+
 <h1>
-    {{ player.nickname }}
+    <span property="name"> {{ player.nickname }} </span>
+
     {% if user == player.user %}
         (<a href="{% url 'steamapp:player_edit' player.steamid %}">edit</a>)
     {% endif %}
@@ -10,33 +25,48 @@
     {% if user == player.user %}
         (<a href="{% url 'steamapp:player_delete' player.steamid %}">delete</a>)
     {% endif %}
+    </span>
 </h1>
 
-<h2>Steam id 64 bits</h2>
+<h2>
+    <span title="steamid"> Steam ID 64 bits </span>
+</h2>
+
 <p>
-    {{ player.steamid }}<br/>
+    <span property="taxID"> {{ player.steamid }} </span>
 </p>
 
-<h2>Profile url</h2>
+<h2>
+    <span title="profile-url"> Profile URL </span>
+</h2>
+
 <p>
-    {{ player.profileurl }}<br/>
+    <span property="url"> {{ player.profileurl }} </span>
 </p>
 
-<h2>Privacy</h2>
+<h2>
+    <span title="profile-privacy"> Privacy </span>
+</h2>
+
 <p>
-    {{ player.privacy }}<br/>
+    {{ player.privacy }}
 </p>
 
-<h2>Country</h2>
+<h2>
+    <span title="country"> Country </span>
+</h2>
+
 <p>
-    {{ player.country }}<br/>
+    <span property="nationality"> {{ player.country }} </span>
 </p>
 
-<h2>Last log (Unix Time)</h2>
-<p>
-    {{ player.lastlog }}<br/>
-</p>
+<h2>
+    <span title="last-log"> Last log (Unix Time) </span>
+</h2>
 
+<p>
+    {{ player.lastlog }}
+</p>
 
 <h2> Player Games
     {% if user.is_authenticated %}(<a href="{% url 'steamapp:ownedgameplayer_create' player.steamid %}">add</a>){% endif %}

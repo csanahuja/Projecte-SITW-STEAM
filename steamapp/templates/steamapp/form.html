@@ -1,6 +1,13 @@
 {% extends "steamapp/base.html" %}
 {% load staticfiles %}
 
+<div id="sidebar">
+  <h2 align="left">
+    {% block sidebar %}<ul><li><a href="/steamapp">Home</a></li></ul>{% endblock %}
+    <br/>
+  </h2>
+</div>
+
 {% block content %}
   <script>
         $(function() {

@@ -1,5 +1,13 @@
 {% extends "steamapp/base.html" %}
 {% block content %}
+
+<div id="sidebar">
+  <h2 align="left">
+    {% block sidebar %}<ul><li><a href="/steamapp">Home</a></li></ul>{% endblock %}
+    <br/>
+  </h2>
+</div>
+
 <h1> <a href="{% url 'steamapp:game_list' %}"> List of Games </a> > Game: </h1>
 <h1>
     {{ game.name }}

@@ -2,6 +2,13 @@
 {% load staticfiles %}
 
 {% block content %}
+<div id="sidebar">
+  <h2 align="left">
+    {% block sidebar %}<ul><li><a href="/steamapp">Home</a></li></ul>{% endblock %}
+    <br/>
+  </h2>
+</div>
+
     <h1> Are you sure you want to delete {{ object }}? </h1>
     <form method="POST" action="">
         {% csrf_token %}
