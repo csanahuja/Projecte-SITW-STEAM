@@ -127,18 +127,7 @@ class GameReviewCreate(LoginRequiredMixin, CreateView):
         form.instance.user = self.request.user
         form.instance.game = Game.objects.get(appid=self.kwargs['pk'])
         return super(GameReviewCreate, self).form_valid(form)
-
-@login_required()
-def review(request, pk):
-    game = get_object_or_404(Game, pk=pk)
-    review = GameReview(
-        rating=request.POST['rating'],
-        comment=request.POST['comment'],
-        user=request.user,
-        game=game)
-    review.save()
-    return HttpResponseRedirect(reverse('steamapp:game_detail', args=(game.appid,)))
-
+        
 
 class OwnedGameDetail(DetailView, ConnegResponseMixin):
     model = OwnedGame

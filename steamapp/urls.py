@@ -14,7 +14,7 @@ from views import PlayerList, PlayerDetail, GameList, GameDetail, \
 
 from views import PlayerCreate, GameCreate, OwnedGamePlayerCreate, OwnedGameGameCreate, \
                   AchievementCreate, OwnAchPlayerCreate, OwnAchAchCreate, AchievementGameCreate, \
-                  review, GameReviewCreate
+                  GameReviewCreate
 
 from views import LoginRequiredCheckIsOwnerUpdateView, LoginRequiredCheckIsOwnerDeleteView
 
@@ -90,7 +90,7 @@ urlpatterns = [
             form_class=GameForm),
         name='game_edit'),
 
-    # Create a game review using function, ex: /steamapp/game/1/reviews/create/
+    # Create a GameReview, /steamapp/game/<ppid>/reviews/create/
     url(r'^steamapp/(?P<pk>\d+)/reviews/create/$',
         GameReviewCreate.as_view(),
         name='review_create'),
