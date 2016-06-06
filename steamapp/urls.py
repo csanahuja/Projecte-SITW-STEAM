@@ -4,16 +4,17 @@ from django.contrib.auth.views import login, logout
 from rest_framework.urlpatterns import format_suffix_patterns
 from django.core.urlresolvers import reverse_lazy
 
-from models import Player, Game, Achievement, OwnedGame, OwnedAchievement
+from models import Player, Game, Achievement, OwnedGame, OwnedAchievement, GameReview
 
-from forms import PlayerForm, GameForm, AchievementForm, OwnedGameForm, OwnedAchievementForm
+from forms import PlayerForm, GameForm, AchievementForm, OwnedGameForm, OwnedAchievementForm, GameReviewForm
 
 from views import PlayerList, PlayerDetail, GameList, GameDetail, \
                   OwnedGameDetail, AchievementList, \
                   AchievementDetail, OwnedAchievementDetail, HomeView
 
 from views import PlayerCreate, GameCreate, OwnedGamePlayerCreate, OwnedGameGameCreate, \
-                  AchievementCreate, OwnAchPlayerCreate, OwnAchAchCreate, AchievementGameCreate
+                  AchievementCreate, OwnAchPlayerCreate, OwnAchAchCreate, AchievementGameCreate, \
+                  review, GameReviewCreate
 
 from views import LoginRequiredCheckIsOwnerUpdateView, LoginRequiredCheckIsOwnerDeleteView
 
@@ -88,6 +89,12 @@ urlpatterns = [
             model=Game,
             form_class=GameForm),
         name='game_edit'),
+
+    # Create a game review using function, ex: /steamapp/game/1/reviews/create/
+    url(r'^steamapp/(?P<pk>\d+)/reviews/create/$',
+        GameReviewCreate.as_view(),
+        name='review_create'),
+
 
     # Delete a Game, /steamapp/games/<appid>/delete/
     url(r'^games/(?P<pk>\d+)/delete/$',

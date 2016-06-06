@@ -5,14 +5,15 @@ from django.utils.decorators import method_decorator
 from django.core import serializers
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
+from django.shortcuts import get_object_or_404
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic import CreateView, UpdateView, DeleteView
 from django.views.generic.base import TemplateResponseMixin
 
-from models import Player, Game, OwnedGame, Achievement, OwnedAchievement
+from models import Player, Game, OwnedGame, Achievement, OwnedAchievement, GameReview
 from forms import PlayerForm, GameForm, OwnedGamePlayerForm, OwnedGameGameForm, \
                   AchievementForm, OwnedAchievementPlayerForm, OwnedAchievementAchForm, \
-                  AchievementGameForm
+                  AchievementGameForm, GameReviewForm
 
 from rest_framework import generics,permissions
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
@@ -116,6 +117,27 @@ class GameCreate(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super(GameCreate, self).form_valid(form)
+
+class GameReviewCreate(LoginRequiredMixin, CreateView):
+    model = GameReview
+    template_name = 'steamapp/form.html'
+    form_class = GameReviewForm
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        form.instance.game = Game.objects.get(appid=self.kwargs['pk'])
+        return super(GameReviewCreate, self).form_valid(form)
+
+@login_required()
+def review(request, pk):
+    game = get_object_or_404(Game, pk=pk)
+    review = GameReview(
+        rating=request.POST['rating'],
+        comment=request.POST['comment'],
+        user=request.user,
+        game=game)
+    review.save()
+    return HttpResponseRedirect(reverse('steamapp:game_detail', args=(game.appid,)))
 
 
 class OwnedGameDetail(DetailView, ConnegResponseMixin):

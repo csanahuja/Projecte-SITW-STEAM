@@ -1,4 +1,6 @@
 {% extends "steamapp/base.html" %}
+{% block title %}Steamapp - {{game.name }}{% endblock %}
+
 {% block content %}
 
 <div id="sidebar">
@@ -8,9 +10,11 @@
   </h2>
 </div>
 
+
 <h1> <a href="{% url 'steamapp:game_list' %}"> List of Games </a> > Game: </h1>
+<span vocab="http://schema.org/" typeof="VideoGame">
 <h1>
-    {{ game.name }}
+    <span property="name">{{ game.name }}</span>
     {% if user == game.user %}
         (<a href="{% url 'steamapp:game_edit' game.appid %}">edit</a>)
     {% endif %}
@@ -24,6 +28,41 @@
 <p>
     {{ game.appid }}<br/>
 </p>
+
+<h2>Reviews
+{% if user.is_authenticated %}(<a href="{% url 'steamapp:review_create' game.appid %}">add</a>){% endif %}
+</h2>
+
+{% if game.gamereview_set.all|length > 0 %}
+<span rel="aggregateRating">
+    <p typeof="AggregateRating">
+        Average rating <span property="ratingValue">{{ game.averageRating|stringformat:".1f" }}</span>
+        {% with game.gamereview_set.all|length as reviewCount %}
+        from <span property="reviewCount">{{ reviewCount }}</span> review{{ reviewCount|pluralize }}
+        {% endwith %}
+    </p>
+    <br/>
+
+</span>
+<rel="review">
+    {% for review in game.gamereview_set.all %}
+        <li typeof="Review">
+            <p rel="reviewRating" typeof="Rating">
+                <span property="worstRating" content="{{ RATING_CHOICES.0.0 }}"></span>
+                <span property="ratingValue">{{ review.rating }}</span> star{{ review.rating|pluralize }}
+                {% with RATING_CHOICES|last as best %}
+                <span property="bestRating" content="{{ best.0 }}"></span>
+                {% endwith %}
+            </p>
+            <p property="description">{{ review.comment }}</p>
+            <p>Created by <span property="author">{{ review.user }}</span> on
+                <span property="datePublished" content="{{ review.date|date:'Y-m-d' }}">{{ review.date }}</span></p>
+        </li>
+        <br/>
+    {% endfor %}
+</span>
+{% endif %}
+
 
 <h2> Game Achievements
     {% if user.is_authenticated %}

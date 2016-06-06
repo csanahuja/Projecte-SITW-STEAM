@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from models import Player, Game, Achievement, OwnedGame, OwnedAchievement
+from models import Player, Game, Achievement, OwnedGame, OwnedAchievement, GameReview
 
 class PlayerForm(ModelForm):
     class Meta:
@@ -10,6 +10,11 @@ class GameForm(ModelForm):
     class Meta:
         model = Game
         exclude = ('user',)
+
+class GameReviewForm(ModelForm):
+    class Meta:
+        model = GameReview
+        exclude = ('user','date','game',)
 
 class AchievementForm(ModelForm):
     class Meta:
